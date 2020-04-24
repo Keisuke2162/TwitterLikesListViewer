@@ -120,7 +120,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController {
                 //ユーザーの設定が正常に取得できたらユーザーのいいね欄を取得
                 //パラメータをセット（必要なパラメータはTwitter Developerのサイトに記載あり）
                 //screen_name -> ユーザーID（自分のID）、　count -> 200が最大
-                let paramater: OAuthSwift.ConfigParameters = ["screen_name":setting.screenName, "count":"1000"]
+                let sinceValue = "000000000000000000"
+                let paramater: OAuthSwift.ConfigParameters = ["screen_name":setting.screenName, "count":"200", "since_id":sinceValue]
                 
                 client.get(favUrl, parameters: paramater, headers: nil, completionHandler: { favResult in
                     switch favResult {
