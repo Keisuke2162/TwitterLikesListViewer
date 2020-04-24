@@ -3,29 +3,45 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7C7DBE4F928C257263F1CC74 /* Pods_TwitterLikesListViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E19AE75727E741C9221DF02 /* Pods_TwitterLikesListViewer.framework */; };
+		E741E498245277D900C2A7EC /* TwitterLoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E497245277D900C2A7EC /* TwitterLoinViewController.swift */; };
+		E741E49A2453037500C2A7EC /* APIrequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E4992453037500C2A7EC /* APIrequest.swift */; };
+		E741E49C245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E49B245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift */; };
 		E78F7E75245222C300DF6E4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E74245222C300DF6E4A /* AppDelegate.swift */; };
-		E78F7E77245222C300DF6E4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E76245222C300DF6E4A /* SceneDelegate.swift */; };
 		E78F7E79245222C300DF6E4A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E78245222C300DF6E4A /* ViewController.swift */; };
 		E78F7E7C245222C300DF6E4A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E78F7E7A245222C300DF6E4A /* Main.storyboard */; };
 		E78F7E7F245222C300DF6E4A /* TwitterLikesListViewer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E7D245222C300DF6E4A /* TwitterLikesListViewer.xcdatamodeld */; };
 		E78F7E81245222C600DF6E4A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E78F7E80245222C600DF6E4A /* Assets.xcassets */; };
 		E78F7E84245222C600DF6E4A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E78F7E82245222C600DF6E4A /* LaunchScreen.storyboard */; };
+		E78F7E8C245223B100DF6E4A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E78F7E8B245223B100DF6E4A /* GoogleService-Info.plist */; };
+		E78F7E8E2452401D00DF6E4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */; };
+		E78F7E90245240D700DF6E4A /* LikesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E8F245240D700DF6E4A /* LikesListViewController.swift */; };
+		E78F7E92245241AF00DF6E4A /* TimeLineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		245E61A5A047606535E78409 /* Pods-TwitterLikesListViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterLikesListViewer.debug.xcconfig"; path = "Target Support Files/Pods-TwitterLikesListViewer/Pods-TwitterLikesListViewer.debug.xcconfig"; sourceTree = "<group>"; };
+		2E19AE75727E741C9221DF02 /* Pods_TwitterLikesListViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterLikesListViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		61B2F5353A4BC43F5321BEFF /* Pods-TwitterLikesListViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterLikesListViewer.release.xcconfig"; path = "Target Support Files/Pods-TwitterLikesListViewer/Pods-TwitterLikesListViewer.release.xcconfig"; sourceTree = "<group>"; };
+		E741E497245277D900C2A7EC /* TwitterLoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterLoinViewController.swift; sourceTree = "<group>"; };
+		E741E4992453037500C2A7EC /* APIrequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIrequest.swift; sourceTree = "<group>"; };
+		E741E49B245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_APIrequest_Backup_ViewController.swift; sourceTree = "<group>"; };
 		E78F7E71245222C300DF6E4A /* TwitterLikesListViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterLikesListViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E78F7E74245222C300DF6E4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E78F7E76245222C300DF6E4A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E78F7E78245222C300DF6E4A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E78F7E7B245222C300DF6E4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E78F7E7E245222C300DF6E4A /* TwitterLikesListViewer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TwitterLikesListViewer.xcdatamodel; sourceTree = "<group>"; };
 		E78F7E80245222C600DF6E4A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E78F7E83245222C600DF6E4A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E78F7E85245222C600DF6E4A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E78F7E8B245223B100DF6E4A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		E78F7E8F245240D700DF6E4A /* LikesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesListViewController.swift; sourceTree = "<group>"; };
+		E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +49,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C7DBE4F928C257263F1CC74 /* Pods_TwitterLikesListViewer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		25321C988402CB26BD93B256 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2E19AE75727E741C9221DF02 /* Pods_TwitterLikesListViewer.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D4DC17B0E28C077BAE3D434F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				245E61A5A047606535E78409 /* Pods-TwitterLikesListViewer.debug.xcconfig */,
+				61B2F5353A4BC43F5321BEFF /* Pods-TwitterLikesListViewer.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E78F7E68245222C300DF6E4A = {
 			isa = PBXGroup;
 			children = (
 				E78F7E73245222C300DF6E4A /* TwitterLikesListViewer */,
 				E78F7E72245222C300DF6E4A /* Products */,
+				D4DC17B0E28C077BAE3D434F /* Pods */,
+				25321C988402CB26BD93B256 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -59,12 +95,18 @@
 			isa = PBXGroup;
 			children = (
 				E78F7E74245222C300DF6E4A /* AppDelegate.swift */,
-				E78F7E76245222C300DF6E4A /* SceneDelegate.swift */,
+				E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */,
 				E78F7E78245222C300DF6E4A /* ViewController.swift */,
+				E741E497245277D900C2A7EC /* TwitterLoinViewController.swift */,
+				E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */,
+				E741E49B245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift */,
 				E78F7E7A245222C300DF6E4A /* Main.storyboard */,
 				E78F7E80245222C600DF6E4A /* Assets.xcassets */,
+				E78F7E8F245240D700DF6E4A /* LikesListViewController.swift */,
+				E741E4992453037500C2A7EC /* APIrequest.swift */,
 				E78F7E82245222C600DF6E4A /* LaunchScreen.storyboard */,
 				E78F7E85245222C600DF6E4A /* Info.plist */,
+				E78F7E8B245223B100DF6E4A /* GoogleService-Info.plist */,
 				E78F7E7D245222C300DF6E4A /* TwitterLikesListViewer.xcdatamodeld */,
 			);
 			path = TwitterLikesListViewer;
@@ -77,9 +119,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E78F7E88245222C600DF6E4A /* Build configuration list for PBXNativeTarget "TwitterLikesListViewer" */;
 			buildPhases = (
+				175121FEB154870ADE980D40 /* [CP] Check Pods Manifest.lock */,
 				E78F7E6D245222C300DF6E4A /* Sources */,
 				E78F7E6E245222C300DF6E4A /* Frameworks */,
 				E78F7E6F245222C300DF6E4A /* Resources */,
+				3DEA0AE00EB62ED280A8D173 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -130,11 +174,54 @@
 			files = (
 				E78F7E84245222C600DF6E4A /* LaunchScreen.storyboard in Resources */,
 				E78F7E81245222C600DF6E4A /* Assets.xcassets in Resources */,
+				E78F7E8C245223B100DF6E4A /* GoogleService-Info.plist in Resources */,
 				E78F7E7C245222C300DF6E4A /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		175121FEB154870ADE980D40 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TwitterLikesListViewer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3DEA0AE00EB62ED280A8D173 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TwitterLikesListViewer/Pods-TwitterLikesListViewer-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TwitterLikesListViewer/Pods-TwitterLikesListViewer-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TwitterLikesListViewer/Pods-TwitterLikesListViewer-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E78F7E6D245222C300DF6E4A /* Sources */ = {
@@ -142,9 +229,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E78F7E7F245222C300DF6E4A /* TwitterLikesListViewer.xcdatamodeld in Sources */,
+				E741E498245277D900C2A7EC /* TwitterLoinViewController.swift in Sources */,
+				E741E49C245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift in Sources */,
 				E78F7E79245222C300DF6E4A /* ViewController.swift in Sources */,
+				E78F7E90245240D700DF6E4A /* LikesListViewController.swift in Sources */,
 				E78F7E75245222C300DF6E4A /* AppDelegate.swift in Sources */,
-				E78F7E77245222C300DF6E4A /* SceneDelegate.swift in Sources */,
+				E78F7E8E2452401D00DF6E4A /* SceneDelegate.swift in Sources */,
+				E741E49A2453037500C2A7EC /* APIrequest.swift in Sources */,
+				E78F7E92245241AF00DF6E4A /* TimeLineViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +378,7 @@
 		};
 		E78F7E89245222C600DF6E4A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 245E61A5A047606535E78409 /* Pods-TwitterLikesListViewer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -304,6 +397,7 @@
 		};
 		E78F7E8A245222C600DF6E4A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 61B2F5353A4BC43F5321BEFF /* Pods-TwitterLikesListViewer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
