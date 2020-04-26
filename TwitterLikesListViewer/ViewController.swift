@@ -52,5 +52,10 @@ class ViewController: UIViewController {
         self.view.addSubview(pageMenuController!.view)
         pageMenuController?.didMove(toParent: self)
     }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
 }
 

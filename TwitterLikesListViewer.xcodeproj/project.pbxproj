@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		7C7DBE4F928C257263F1CC74 /* Pods_TwitterLikesListViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E19AE75727E741C9221DF02 /* Pods_TwitterLikesListViewer.framework */; };
-		E741E498245277D900C2A7EC /* TwitterLoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E497245277D900C2A7EC /* TwitterLoinViewController.swift */; };
 		E741E49A2453037500C2A7EC /* APIrequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E4992453037500C2A7EC /* APIrequest.swift */; };
 		E741E49C245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E49B245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift */; };
+		E741E4A42454A4C900C2A7EC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E4A32454A4C900C2A7EC /* CustomTableViewCell.swift */; };
+		E741E4AA2454F58900C2A7EC /* TweetData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E741E4A92454F58900C2A7EC /* TweetData.swift */; };
+		E742C3002456274D00F3D0DE /* TweetManagement.swift in Sources */ = {isa = PBXBuildFile; fileRef = E742C2FF2456274D00F3D0DE /* TweetManagement.swift */; };
 		E78F7E75245222C300DF6E4A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E74245222C300DF6E4A /* AppDelegate.swift */; };
 		E78F7E79245222C300DF6E4A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E78245222C300DF6E4A /* ViewController.swift */; };
 		E78F7E7C245222C300DF6E4A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E78F7E7A245222C300DF6E4A /* Main.storyboard */; };
@@ -27,9 +29,11 @@
 		245E61A5A047606535E78409 /* Pods-TwitterLikesListViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterLikesListViewer.debug.xcconfig"; path = "Target Support Files/Pods-TwitterLikesListViewer/Pods-TwitterLikesListViewer.debug.xcconfig"; sourceTree = "<group>"; };
 		2E19AE75727E741C9221DF02 /* Pods_TwitterLikesListViewer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterLikesListViewer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		61B2F5353A4BC43F5321BEFF /* Pods-TwitterLikesListViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterLikesListViewer.release.xcconfig"; path = "Target Support Files/Pods-TwitterLikesListViewer/Pods-TwitterLikesListViewer.release.xcconfig"; sourceTree = "<group>"; };
-		E741E497245277D900C2A7EC /* TwitterLoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitterLoinViewController.swift; sourceTree = "<group>"; };
 		E741E4992453037500C2A7EC /* APIrequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIrequest.swift; sourceTree = "<group>"; };
 		E741E49B245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Login_APIrequest_Backup_ViewController.swift; sourceTree = "<group>"; };
+		E741E4A32454A4C900C2A7EC /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		E741E4A92454F58900C2A7EC /* TweetData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetData.swift; sourceTree = "<group>"; };
+		E742C2FF2456274D00F3D0DE /* TweetManagement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetManagement.swift; sourceTree = "<group>"; };
 		E78F7E71245222C300DF6E4A /* TwitterLikesListViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitterLikesListViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E78F7E74245222C300DF6E4A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E78F7E78245222C300DF6E4A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -97,9 +101,11 @@
 				E78F7E74245222C300DF6E4A /* AppDelegate.swift */,
 				E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */,
 				E78F7E78245222C300DF6E4A /* ViewController.swift */,
-				E741E497245277D900C2A7EC /* TwitterLoinViewController.swift */,
 				E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */,
 				E741E49B245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift */,
+				E741E4A92454F58900C2A7EC /* TweetData.swift */,
+				E742C2FF2456274D00F3D0DE /* TweetManagement.swift */,
+				E741E4A32454A4C900C2A7EC /* CustomTableViewCell.swift */,
 				E78F7E7A245222C300DF6E4A /* Main.storyboard */,
 				E78F7E80245222C600DF6E4A /* Assets.xcassets */,
 				E78F7E8F245240D700DF6E4A /* LikesListViewController.swift */,
@@ -229,14 +235,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				E78F7E7F245222C300DF6E4A /* TwitterLikesListViewer.xcdatamodeld in Sources */,
-				E741E498245277D900C2A7EC /* TwitterLoinViewController.swift in Sources */,
+				E741E4AA2454F58900C2A7EC /* TweetData.swift in Sources */,
 				E741E49C245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift in Sources */,
+				E742C3002456274D00F3D0DE /* TweetManagement.swift in Sources */,
 				E78F7E79245222C300DF6E4A /* ViewController.swift in Sources */,
 				E78F7E90245240D700DF6E4A /* LikesListViewController.swift in Sources */,
 				E78F7E75245222C300DF6E4A /* AppDelegate.swift in Sources */,
 				E78F7E8E2452401D00DF6E4A /* SceneDelegate.swift in Sources */,
 				E741E49A2453037500C2A7EC /* APIrequest.swift in Sources */,
 				E78F7E92245241AF00DF6E4A /* TimeLineViewController.swift in Sources */,
+				E741E4A42454A4C900C2A7EC /* CustomTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

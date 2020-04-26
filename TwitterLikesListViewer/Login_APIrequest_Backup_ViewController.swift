@@ -10,9 +10,11 @@ import UIKit
 import Firebase
 import OAuthSwift
 
-class Login_APIrequest_Backup_ViewController: UIViewController {
+class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var provider: OAuthProvider?
+    
+    var tableView:UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +25,35 @@ class Login_APIrequest_Backup_ViewController: UIViewController {
         provider = OAuthProvider(providerID: "twitter.com")
         //Twitterログイン処理
         SigninWithTwitter()
+        
+        //tableView描画
+        self.tableView = UITableView()
+        self.tableView.frame = self.view.frame
+        self.tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "timeLineCell")
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        //self.tableView.estimatedRowHeight = 500
+        //self.tableView.rowHeight = UITableView.automaticDimension
+        
+        
+        /*
+        let refresh = UIRefreshControl()
+        refresh.addTarget(self, action: #selector(TableRefresh), for: .valueChanged)
+        self.tableView.refreshControl = refresh
+        */
     }
     
+    /*
+    @objc func TableRefresh() {
+        ShowTimeLine(accessToken: commonToken, secret: commonSecret)
+        
+        tableView.reloadData()
+    }
+    
+    var commonToken: String = ""
+    var commonSecret: String = ""
+    
+    */
     //Twitterへのログイン処理
     func SigninWithTwitter() {
         
@@ -41,6 +70,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController {
                     if let credential = authResult?.credential as? OAuthCredential,
                         let token = credential.accessToken,
                         let secret = credential.secret {
+                        //self.commonToken = token
+                        //self.commonSecret = secret
                         print("accessToken = \(token)")
                         print("secret = \(secret)")
                         self.ShowTimeLine(accessToken: token, secret: secret)
@@ -50,37 +81,10 @@ class Login_APIrequest_Backup_ViewController: UIViewController {
         })
     }
     
-    //取得データはめる
-    struct TwitterSetting: Decodable {
-        let language: String
-        let screenName: String
-        
-        enum CodingKeys: String, CodingKey {
-            case language = "language"
-            case screenName = "screen_name"
-        }
-    }
-    struct Favorite: Decodable {
-        let created: String
-        let id_str: String
-        let text: String
-        //let user: User
-        /*
-        struct User: Decodable {
-            let id_str: String
-            let name: String
-            let screen_name: String
-            let url: String
-        }
-        */
-        enum CodingKeys: String, CodingKey {
-            case created = "created_at"
-            case id_str = "id_str"
-            case text = "text"
-            //case user = "user"
-        }
-        
-    }
+
+    
+    //var twitterCellText: [String] = []
+    var favoriteList: [Favorite] = []
     
     func ShowTimeLine(accessToken: String, secret: String) {
         let comsumerKey = "2H2A7Ej1g4WBimFP4V888reYG"
@@ -120,21 +124,39 @@ class Login_APIrequest_Backup_ViewController: UIViewController {
                 //ユーザーの設定が正常に取得できたらユーザーのいいね欄を取得
                 //パラメータをセット（必要なパラメータはTwitter Developerのサイトに記載あり）
                 //screen_name -> ユーザーID（自分のID）、　count -> 200が最大
-                let sinceValue = "000000000000000000"
-                let paramater: OAuthSwift.ConfigParameters = ["screen_name":setting.screenName, "count":"200", "since_id":sinceValue]
+                let paramater: OAuthSwift.ConfigParameters = ["screen_name":setting.screenName, "count":"200"]
                 
                 client.get(favUrl, parameters: paramater, headers: nil, completionHandler: { favResult in
                     switch favResult {
                     case .success(let favResponse):
                         
-                        guard let favoriteListViewer = try? JSONDecoder().decode([Favorite].self, from: favResponse.data) else {
-                            print("GetFavorite_Decode Error")
-                            return
+                        DispatchQueue.main.async {
+                            guard let favoriteListViewer = try? JSONDecoder().decode([Favorite].self, from: favResponse.data) else {
+                                print("GetFavorite_Decode Error")
+                                return
+                            }
+                            print("fav_success")
+                            
+                            /*
+                            //いいね欄のツイートを一つずつ配列に格納
+                            for i in 0 ..< favoriteListViewer.count {
+                                print("name = \(favoriteListViewer[i].user.name)")
+                                print("screenname = \(favoriteListViewer[i].user.screen_name)")
+                                print(favoriteListViewer[i].text)
+                                print(favoriteListViewer[i].user.profile_image_url_https)
+                                self.favoriteList.append(favoriteListViewer[i])
+                                //self.twitterCellText.append(favoriteListViewer[i].text)
+                            }
+                            */
+                            self.favoriteList = favoriteListViewer
+                            
+                            self.tableView.reloadData()
                         }
-                        print("fav_success")
-                        for i in 0 ..< favoriteListViewer.count {
-                            print(favoriteListViewer[i].text)
-                        }
+                        
+                        
+
+                        
+                        self.view.addSubview(self.tableView)
                     
                     case .failure:
                         print("fav_failure")
@@ -156,6 +178,44 @@ class Login_APIrequest_Backup_ViewController: UIViewController {
             // Pass the selected object to the new view controller.
         }
         */
-
+    
+    //セルの数
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return favoriteList.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 300
+    }
+    
+    //セルに描画する内容（カスタムセル でレイアウトは決めてるので内容を投げる）
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "timeLineCell") as! CustomTableViewCell
+        
+        let tweet = favoriteList[indexPath.row]
+        cell.setCell(name: tweet.user.name, id: "@" + tweet.user.screen_name, content: tweet.text, iconImage: UIImage(url: tweet.user.profile_image_url_https))
+        
+        return cell
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
 }
 
+//URLを画像に変換
+extension UIImage {
+    public convenience init(url: String) {
+        let url = URL(string: url)
+        do {
+            let data = try Data(contentsOf: url!)
+            self.init(data: data)!
+            return
+        } catch let err {
+            print("Error : \(err.localizedDescription)")
+        }
+        self.init()
+    }
+}
