@@ -9,48 +9,68 @@
 import UIKit
 import PageMenuKitSwift
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, DoingViewController {
+
+    
     
     var pageMenuController: PMKPageMenuController? = nil
-    var strArray: [String] = []
+    
+    var category: [String] = []
+    
+    let categoryData = ViewCategory()
+    
+    var controllers: [UIViewController] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         print("setViewController")
-            
-        var controllers: [UIViewController] = []
-        let dateFormatter = DateFormatter()
+
+        //いいね欄表示用画面
+        let homeView: Login_APIrequest_Backup_ViewController = Login_APIrequest_Backup_ViewController()
+        homeView.title = "Likes"
+        controllers.append(homeView)
         
-        //いいねリスト表示画面
-        //let settingView: LikesListViewController = LikesListViewController()
-        //settingView.title = "Setting"
-        //controllers.append(settingView)
         
-        //
-        let settingView: Login_APIrequest_Backup_ViewController = Login_APIrequest_Backup_ViewController()
-        settingView.title = "Setting"
-        controllers.append(settingView)
-        
+        category = categoryData.GetValue()
+        print(category.count)
         //カテゴリごとの画面
-        strArray = ["1","2","3","4","5","6","7","8","9","10","11","12"]
-        var i = 0
-        for month in dateFormatter.monthSymbols {
+        for month in category {
             let viewController: TimeLineViewController = TimeLineViewController()
             viewController.title = month
-            //viewController.ViewText(month: month)
-            viewController.array = strArray
                 
             controllers.append(viewController)
-            i += 1
         }
+        
+        
+        let generalView: GeneralViewController = GeneralViewController()
+        generalView.title = "General"
+        generalView.addViewController = self
+        controllers.append(generalView)
+        
         
         let statusBarHeight: CGFloat = view.frame.height * 0.05
         pageMenuController = PMKPageMenuController(controllers: controllers, menuStyle: .Smart, menuColors: [], topBarHeight: statusBarHeight)
         self.addChild(pageMenuController!)
         self.view.addSubview(pageMenuController!.view)
         pageMenuController?.didMove(toParent: self)
+    }
+    
+    //ViewController追加処理
+    func AddViewControlle() {
+        
+        for i in view.subviews {
+            i.removeFromSuperview()
+        }
+        
+        for j in self.children {
+            j.removeFromParent()
+        }
+        
+        controllers = []
+        
+        viewDidLoad()
     }
     
     override func didReceiveMemoryWarning() {

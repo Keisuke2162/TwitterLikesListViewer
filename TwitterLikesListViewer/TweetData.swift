@@ -23,7 +23,27 @@ struct Favorite: Decodable {
     let created: String
     let id_str: String
     let text: String
+    
+    let extended_entities: Extended_entities?
+    
     let user: User
+    
+    
+    struct Extended_entities: Decodable {
+        let media: [Media]
+        
+        struct Media: Decodable {
+            let media_url_https: String
+            
+            enum CodingKeys: String, CodingKey {
+                case media_url_https = "media_url_https"
+            }
+        }
+        
+        enum CodingKeys: String, CodingKey {
+            case media = "media"
+        }
+    }
     
     
     struct User: Decodable {
@@ -46,6 +66,7 @@ struct Favorite: Decodable {
         case created = "created_at"
         case id_str = "id_str"
         case text = "text"
+        case extended_entities = "extended_entities"
         case user = "user"
     }
     

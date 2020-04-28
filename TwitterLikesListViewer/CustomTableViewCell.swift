@@ -13,7 +13,8 @@ class CustomTableViewCell: UITableViewCell {
     var iconImageView = UIImageView()
     var userName = UILabel()
     var userID = UILabel()
-    var contentLabel = UITextView()
+    var contentLabel = UILabel()
+    var contentPic = UIImageView()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -39,7 +40,7 @@ class CustomTableViewCell: UITableViewCell {
         contentView.addSubview(contentLabel)
         contentView.addSubview(userName)
         contentView.addSubview(userID)
-        
+        contentView.addSubview(contentPic)
     }
     
     required init?(coder: NSCoder) {
@@ -55,21 +56,37 @@ class CustomTableViewCell: UITableViewCell {
         iconImageView.clipsToBounds = true
         
         userName.frame = CGRect(x: 100, y: 0, width: self.frame.width - 100, height: 30)
-        //userName.backgroundColor = .red
         
         userID.frame = CGRect(x: 100, y: 30, width: self.frame.width - 100, height: 20)
-        //userID.backgroundColor = .yellow
+        userID.textColor = .gray
         
-        contentLabel.frame = CGRect(x: 100, y: 50, width: self.frame.width - 100, height: self.frame.height - 50)
-        //contentLabel.frame = CGRect(x: 100, y: 50, width: self.frame.width - 100, height: 150)
-        //contentLabel.backgroundColor = .blue
+        contentLabel.frame = CGRect(x: 100, y: 50, width: self.frame.width - 100, height: 75)
+        contentLabel.lineBreakMode = .byWordWrapping
+        contentLabel.numberOfLines = 0
+        //contentLabel.backgroundColor = .gray
+        
+        //contentPic.frame = CGRect(x: 100, y: 125, width: self.frame.width - 100, height: 175)
+        //contentPic.backgroundColor = .gray
     }
     
-    func setCell(name: String, id: String, content: String, iconImage: UIImage) {
+    func setCell(name: String, id: String, content: String?, iconImage: UIImage/*, contentImage: Favorite.Extended_entities?*/) {
         iconImageView.image = iconImage
         userName.text = name
         userID.text = id
-        contentLabel.text = content
+        if let content = content {
+            contentLabel.text = content
+        } else {
+            print("error")
+            contentLabel.text = ""
+        }
+        
+        
+        /*
+        if let image = contentImage {
+            contentPic.frame = CGRect(x: 100, y: 125, width: self.frame.width - 100, height: 175)
+            contentPic.image = UIImage(url: image.media[0].media_url_https)
+        }
+        */
     }
 }
 
