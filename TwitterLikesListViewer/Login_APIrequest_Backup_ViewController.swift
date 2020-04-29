@@ -246,6 +246,13 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         //認証→取得→保存→一覧更新
         //SigninWithTwitter()
         
+        //タイムライン用Realmの初期化
+        try! self.realmLikesList.write {
+            //self.realmLikesList.deleteAll()
+            self.realmLikesList.delete(self.itemList)
+            print("remove Realm")
+        }
+        
         let getKeys = twitterKeys.GetValue()
         
         useToken = getKeys.0
@@ -331,13 +338,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                 client.get(favUrl, parameters: paramater, headers: nil, completionHandler: { favResult in
                     switch favResult {
                     case .success(let favResponse):
-                        
-                        //タイムライン用Realmの初期化
-                        try! self.realmLikesList.write {
-                            //self.realmLikesList.deleteAll()
-                            self.realmLikesList.delete(self.itemList)
-                            print("remove Realm")
-                        }
                         
                         DispatchQueue.main.async {
                             guard let favoriteListViewer = try? JSONDecoder().decode([Favorite].self, from: favResponse.data) else {

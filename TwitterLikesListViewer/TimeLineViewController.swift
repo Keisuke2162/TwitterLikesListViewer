@@ -11,13 +11,19 @@ import RealmSwift
 
 class TimeLineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    //relamのアイテムリスト
-    var itemList: Results<CategoriseItem>!
-    
     //表示用配列
     var showTweetItems: [CategoriseItem] = []
     
     var tableView:UITableView!
+    
+    //tableViewのリフレッシュ
+    let refresh = UIRefreshControl()
+    
+    //Realmのインスタンス
+    var realm = try! Realm()
+    //カテゴライズしたツイートのアイテムリスト
+    var tweetList: Results<CategoriseItem>!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,30 +38,38 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
         
         self.view.addSubview(tableView)
         
-        //いいね欄保存用のRealmデータベース
-        let realm = try! Realm()
+        refresh.addTarget(self, action: #selector(Reload), for: UIControl.Event.valueChanged)
+        tableView.refreshControl = refresh
+        
+        SettingTableView()
         
         // Do any additional setup after loading the view.
-        itemList = realm.objects(CategoriseItem.self)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("viewWillAppear")
+    }
+    
+    @objc func Reload() {
+        SettingTableView()
         
-        print("取得数→\(itemList.count)")
+        refresh.endRefreshing()
+    }
+    
+    func SettingTableView() {
         
-        /*
-        showTweetItems = []
-        //取得したデータを表示用配列に変換
-        for i in 0 ..< itemList.count {
-            let showItem = TweetItem()
-            
-            showItem.userName = itemList[i].userName
-            showItem.userID = itemList[i].userID
-            showItem.userIcon = itemList[i].userIcon
-            showItem.content = itemList[i].content
-            showItem.tweetID = itemList[i].tweetID
-            
-            showTweetItems.append(showItem)
+        let viewTitle = self.title!
+        
+        //Realmからカテゴライズしたツイートを取得
+        tweetList = realm.objects(CategoriseItem.self)
+        
+        for i in 0 ..< tweetList.count {
+            if tweetList[i].category! == viewTitle {
+                showTweetItems.append(tweetList[i])
+            }
         }
-        */
         
+        self.tableView.reloadData()
     }
 
     /*
@@ -74,19 +88,20 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return showTweetItems.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         
-        //cell.setCell(titleStr: array[indexPath.row], iconImage: UIImage(named: "information")!)
+        let tweetContent = showTweetItems[indexPath.row]
+        cell.setCell(name: tweetContent.userName, id: tweetContent.userID, content: tweetContent.content, iconImage: UIImage(url: tweetContent.userIcon))
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 300
+        return 125
     }
 
 }

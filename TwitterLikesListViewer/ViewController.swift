@@ -8,6 +8,7 @@
 
 import UIKit
 import PageMenuKitSwift
+import RealmSwift
 
 class ViewController: UIViewController, DoingViewController {
 
@@ -20,12 +21,14 @@ class ViewController: UIViewController, DoingViewController {
     let categoryData = ViewCategory()
     
     var controllers: [UIViewController] = []
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         print("setViewController")
+
         
         //項目設定画面
         let generalView: GeneralViewController = GeneralViewController()
@@ -42,10 +45,10 @@ class ViewController: UIViewController, DoingViewController {
         category = categoryData.GetValue()
         print(category.count)
         //カテゴリごとの画面
-        for month in category {
+        for viewTitle in category {
             let viewController: TimeLineViewController = TimeLineViewController()
-            viewController.title = month
-                
+            viewController.title = viewTitle
+            
             controllers.append(viewController)
         }
 
@@ -72,6 +75,7 @@ class ViewController: UIViewController, DoingViewController {
         
         viewDidLoad()
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
