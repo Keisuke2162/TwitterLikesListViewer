@@ -40,9 +40,28 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     
     //いいね欄保存用のRealmデータベース
     let realmLikesList = try! Realm()
+    
+    //カテゴライズしたツイートの保存
+    var categoriseList: Results<CategoriseItem>!
 
     //twitterのキー保存用のクラス
     let twitterKeys = TwitterKeys()
+    
+    //カテゴリ名格納配列
+    var category: [String] = []
+    
+    //カテゴリ配列取得用のクラス
+    let categoryManage = ViewCategory()
+    
+    //振り分け用カテゴリ配列
+    var setCategory: [String] = []
+    
+    //振り分け用ツイート配列
+    var setTweet: [TweetItem] = []
+    
+    //カテゴリボタン用配列
+    var categoryButtonArray: [CustomButton] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,15 +81,44 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         view.addSubview(self.tableView)
         
         //メニューバー
-        menuView.frame = CGRect(x: 0, y: view.frame.height * 0.8, width: view.frame.width, height: 70)
-        menuView.backgroundColor = .red
+        menuView.frame = CGRect(x: 0, y: view.frame.height - 150, width: view.frame.width, height: 70)
         
+        //メニューバーにカテゴリ一覧ボタンを表示
+        //表示の土台となるスクロールView
+        let categoryScroll = UIScrollView()
+        categoryScroll.frame = CGRect(x: 0, y: 0, width: view.frame.width - 70, height: 70)
+        categoryScroll.backgroundColor = .black
+        categoryScroll.layer.borderWidth = 1.0
+        categoryScroll.layer.borderColor = UIColor.white.cgColor
         
-        //更新ボタン
+        menuView.addSubview(categoryScroll)
+        
+        //カテゴリ一覧を取得
+        category = categoryManage.GetValue()
+        
+        for i in 0 ..< category.count {
+            let cateButton = CustomButton()
+            cateButton.frame = CGRect(x: CGFloat(80 * i) + CGFloat(10 * i) + 10 , y: 10, width: 80, height: 50)
+            cateButton.layer.cornerRadius = 10.0
+            cateButton.layer.borderColor = UIColor.white.cgColor
+            cateButton.layer.borderWidth = 1.0
+            cateButton.setTitle(category[i], for: .normal)
+            cateButton.categoryTitle = category[i]
+            cateButton.tag = i
+            cateButton.backgroundColor = .black
+            cateButton.addTarget(self, action: #selector(TapCategoryButton), for: .touchUpInside)
+            categoryButtonArray.append(cateButton)
+            
+            categoryScroll.addSubview(cateButton)
+        }
+        
+        categoryScroll.contentSize = CGSize(width: CGFloat(80 * category.count) + CGFloat(10 * category.count) + 10, height: 70)
+        
+        //カテゴリ.ツイート決定ボタン
         let reloadButton = UIButton()
         reloadButton.frame = CGRect(x: view.frame.width - 70, y: 0, width: 70, height: 70)
         reloadButton.backgroundColor = .blue
-        reloadButton.addTarget(self, action: #selector(TapReload), for: .touchUpInside)
+        reloadButton.addTarget(self, action: #selector(TapDecisionButton), for: .touchUpInside)
         
         
         menuView.addSubview(reloadButton)
@@ -103,7 +151,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             
             itemList = realmLikesList.objects(TweetItem.self)
 
-            
             showTweetItems = []
             //取得したデータを表示用配列に変換
             for i in 0 ..< itemList.count {
@@ -113,6 +160,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                 showItem.userID = itemList[i].userID
                 showItem.userIcon = itemList[i].userIcon
                 showItem.content = itemList[i].content
+                showItem.tweetID = itemList[i].tweetID
                 
                 showTweetItems.append(showItem)
             }
@@ -120,6 +168,78 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             tableView.reloadData()
         }
 
+    }
+    
+    @objc func TapDecisionButton() {
+        
+        if setCategory.count == 0 || setTweet.count == 0 {
+            return
+        }
+        
+        for i in 0 ..< categoryButtonArray.count {
+            categoryButtonArray[i].layer.borderWidth = 1.0
+            categoryButtonArray[i].buttonBool = false
+        }
+        
+        print(setCategory)
+        
+        print("スタックされたツイート↓↓↓")
+        print(setTweet.count)
+        for i in 0 ..< setTweet.count{
+            print(setTweet[i].userName)
+        }
+        
+        //カテゴライズされたツイートを専用データベースへ登録
+        for i in 0 ..< setTweet.count {
+            for j in 0 ..< setCategory.count {
+                let categoriseTweet: CategoriseItem = CategoriseItem()
+                
+                //移し替え
+                categoriseTweet.userIcon = setTweet[i].userIcon
+                categoriseTweet.userName = setTweet[i].userName
+                categoriseTweet.userID = setTweet[i].userID
+                categoriseTweet.content = setTweet[i].content
+                categoriseTweet.tweetID = setTweet[i].tweetID
+                
+                //カテゴリ情報を格納
+                categoriseTweet.category = setCategory[j]
+                
+                try! self.realmLikesList.write {
+                    self.realmLikesList.add(categoriseTweet)
+                }
+            }
+
+        }
+        
+        setCategory.removeAll()
+        setTweet.removeAll()
+
+    }
+    
+    @objc func TapCategoryButton (_ sender: CustomButton) {
+        print(sender.buttonBool)
+        
+        if sender.buttonBool {
+            sender.buttonBool = false
+            sender.layer.borderWidth = 1.0
+            
+            for i in 0 ..< setCategory.count {
+                print("OK")
+                if sender.categoryTitle! == setCategory[i] {
+                    setCategory.remove(at: i)
+                    break
+                }
+            }
+            
+        } else {
+            sender.buttonBool = true
+            sender.layer.borderWidth = 3.0
+            setCategory.append(category[sender.tag])
+        }
+        
+        print(setCategory)
+        
+        
     }
     
     @objc func TapReload() {
@@ -130,6 +250,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         
         useToken = getKeys.0
         useSecret = getKeys.1
+        
         
         if useToken == "key" {
             SigninWithTwitter()
@@ -168,7 +289,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     }
     
 
-    
+    //タイムライン取得処理
     func ShowTimeLine(accessToken: String, secret: String) {
         let comsumerKey = "2H2A7Ej1g4WBimFP4V888reYG"
         let comsumerSecret = "wHfBRX9bXBtqBmDKxwzfCHcLVFkegX5Ry0mnt5GSsvGEqA5Xts"
@@ -211,6 +332,13 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                     switch favResult {
                     case .success(let favResponse):
                         
+                        //タイムライン用Realmの初期化
+                        try! self.realmLikesList.write {
+                            //self.realmLikesList.deleteAll()
+                            self.realmLikesList.delete(self.itemList)
+                            print("remove Realm")
+                        }
+                        
                         DispatchQueue.main.async {
                             guard let favoriteListViewer = try? JSONDecoder().decode([Favorite].self, from: favResponse.data) else {
                                 print("GetFavorite_Decode Error")
@@ -221,12 +349,10 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                             //表示用配列の初期化
                             self.showTweetItems = []
                             
-                            //タイムライン用Realmの初期化
-                            try! self.realmLikesList.write {
-                                self.realmLikesList.deleteAll()
-                                print("remove Realm")
-                            }
-                            
+                            //カテゴリ選択情報のリセット
+                            self.setCategory.removeAll()
+                            self.setTweet.removeAll()
+
                             //Realmへの保存→表示用配列への保存
                             for i in 0 ..< favoriteListViewer.count {
                                 
@@ -237,6 +363,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                                 tweet.userName = favoriteListViewer[i].user.name
                                 tweet.userID = favoriteListViewer[i].user.screen_name
                                 tweet.content = favoriteListViewer[i].text
+                                tweet.tweetID = favoriteListViewer[i].id_str
+                                
                                 //Realmへ書き込み
                                 try! self.realmLikesList.write {
                                     self.realmLikesList.add(tweet)
@@ -277,9 +405,40 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         return showTweetItems.count
     }
     
+    //セルの高さ
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         return 125
+    }
+    
+    //セルタップ時の挙動
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(showTweetItems[indexPath.row].tweetID)
+        
+        //
+        if showTweetItems[indexPath.row].judge {
+            for i in 0 ..< setTweet.count {
+                //ツイートのIDを比較
+                if showTweetItems[indexPath.row].tweetID == setTweet[i].tweetID {
+                    print("スタックから削除")
+                    setTweet.remove(at: i)
+                    break
+                }
+            }
+            try! realmLikesList.write {
+                showTweetItems[indexPath.row].judge = false
+            }
+            
+        } else{
+            print("スタックへ格納")
+            setTweet.append(showTweetItems[indexPath.row])
+            try! realmLikesList.write {
+                showTweetItems[indexPath.row].judge = true
+            }
+            
+            print(setTweet.count)
+        }
+ 
+        
     }
     
     
@@ -313,4 +472,10 @@ extension UIImage {
         }
         self.init()
     }
+}
+
+class CustomButton: UIButton {
+    var categoryTitle: String?
+    var buttonBool: Bool = false
+    var setNum: Int?
 }

@@ -7,28 +7,17 @@
 //
 
 import UIKit
+import RealmSwift
 
 class TimeLineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return array.count
-    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
-        
-        //cell.setCell(titleStr: array[indexPath.row], iconImage: UIImage(named: "information")!)
-        
-        return cell
-    }
+    //relamのアイテムリスト
+    var itemList: Results<CategoriseItem>!
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 300
-    }
-    
+    //表示用配列
+    var showTweetItems: [CategoriseItem] = []
     
     var tableView:UITableView!
-    var array: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +32,30 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
         
         self.view.addSubview(tableView)
         
+        //いいね欄保存用のRealmデータベース
+        let realm = try! Realm()
+        
         // Do any additional setup after loading the view.
+        itemList = realm.objects(CategoriseItem.self)
+        
+        print("取得数→\(itemList.count)")
+        
+        /*
+        showTweetItems = []
+        //取得したデータを表示用配列に変換
+        for i in 0 ..< itemList.count {
+            let showItem = TweetItem()
+            
+            showItem.userName = itemList[i].userName
+            showItem.userID = itemList[i].userID
+            showItem.userIcon = itemList[i].userIcon
+            showItem.content = itemList[i].content
+            showItem.tweetID = itemList[i].tweetID
+            
+            showTweetItems.append(showItem)
+        }
+        */
+        
     }
 
     /*
@@ -59,6 +71,22 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
+        
+        //cell.setCell(titleStr: array[indexPath.row], iconImage: UIImage(named: "information")!)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 300
     }
 
 }

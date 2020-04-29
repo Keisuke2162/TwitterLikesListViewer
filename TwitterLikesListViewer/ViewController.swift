@@ -26,6 +26,12 @@ class ViewController: UIViewController, DoingViewController {
         // Do any additional setup after loading the view.
         
         print("setViewController")
+        
+        //項目設定画面
+        let generalView: GeneralViewController = GeneralViewController()
+        generalView.title = "General"
+        generalView.addViewController = self
+        controllers.append(generalView)
 
         //いいね欄表示用画面
         let homeView: Login_APIrequest_Backup_ViewController = Login_APIrequest_Backup_ViewController()
@@ -42,16 +48,10 @@ class ViewController: UIViewController, DoingViewController {
                 
             controllers.append(viewController)
         }
-        
-        
-        let generalView: GeneralViewController = GeneralViewController()
-        generalView.title = "General"
-        generalView.addViewController = self
-        controllers.append(generalView)
-        
+
         
         let statusBarHeight: CGFloat = view.frame.height * 0.05
-        pageMenuController = PMKPageMenuController(controllers: controllers, menuStyle: .Smart, menuColors: [], topBarHeight: statusBarHeight)
+        pageMenuController = PMKPageMenuController(controllers: controllers, menuStyle: .Plain, menuColors: [], topBarHeight: statusBarHeight)
         self.addChild(pageMenuController!)
         self.view.addSubview(pageMenuController!.view)
         pageMenuController?.didMove(toParent: self)
