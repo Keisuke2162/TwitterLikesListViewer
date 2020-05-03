@@ -12,7 +12,16 @@ import OAuthSwift
 
 import RealmSwift
 
-class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
+    
+    func MoveImageViewer(sender: [String], currentPage: Int) {
+        let vc: ImageVewerViewController = ImageVewerViewController()
+        print("選択画像→\(sender[0])")
+        vc.imageNames = sender
+        vc.currentPage = currentPage
+        present(vc, animated: true, completion: nil)
+    }
+    
     
     var provider: OAuthProvider?
     
@@ -27,6 +36,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     
     //表示用配列
     var showTweetItems: [TweetItem] = []
+    //画像表示用配列
+    var showTweetImages: [[String]] = []
     
     //タイムライン取得用トークン、シークレットトークン
     var useToken: String = ""
@@ -62,6 +73,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     //カテゴリボタン用配列
     var categoryButtonArray: [CustomButton] = []
     
+    let testView = UIView()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +83,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         //Twitter
         provider = OAuthProvider(providerID: "twitter.com")
         
+        testView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        testView.backgroundColor = .red
         
         //*****************UI設定*********************
         //tableView描画
@@ -148,13 +163,14 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             print("通常起動")
             
             //Realmからデータを取得
-            
             itemList = realmLikesList.objects(TweetItem.self)
 
             showTweetItems = []
+            showTweetImages = []
             //取得したデータを表示用配列に変換
             for i in 0 ..< itemList.count {
                 let showItem = TweetItem()
+                var imageArray: [String] = []
                 
                 showItem.userName = itemList[i].userName
                 showItem.userID = itemList[i].userID
@@ -162,9 +178,13 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                 showItem.content = itemList[i].content
                 showItem.tweetID = itemList[i].tweetID
                 
+                for j in 0 ..< itemList[i].picImage.count {
+                    showItem.picImage.append(itemList[i].picImage[j])
+                    imageArray.append(showItem.picImage[j].image)
+                }
+                showTweetImages.append(imageArray)
                 showTweetItems.append(showItem)
             }
-            print("表示件数 = \(showTweetItems.count)")
             tableView.reloadData()
         }
 
@@ -179,14 +199,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         for i in 0 ..< categoryButtonArray.count {
             categoryButtonArray[i].layer.borderWidth = 1.0
             categoryButtonArray[i].buttonBool = false
-        }
-        
-        print(setCategory)
-        
-        print("スタックされたツイート↓↓↓")
-        print(setTweet.count)
-        for i in 0 ..< setTweet.count{
-            print(setTweet[i].userName)
         }
         
         //カテゴライズされたツイートを専用データベースへ登録
@@ -236,10 +248,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             sender.layer.borderWidth = 3.0
             setCategory.append(category[sender.tag])
         }
-        
-        print(setCategory)
-        
-        
     }
     
     @objc func TapReload() {
@@ -294,7 +302,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             }
         })
     }
-    
 
     //タイムライン取得処理
     func ShowTimeLine(accessToken: String, secret: String) {
@@ -348,6 +355,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                             
                             //表示用配列の初期化
                             self.showTweetItems = []
+                            self.showTweetImages = []
                             
                             //カテゴリ選択情報のリセット
                             self.setCategory.removeAll()
@@ -355,7 +363,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
 
                             //Realmへの保存→表示用配列への保存
                             for i in 0 ..< favoriteListViewer.count {
-                                
                                 //取得したデータをRealmに保存
                                 let tweet: TweetItem = TweetItem()
                                 
@@ -365,13 +372,30 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                                 tweet.content = favoriteListViewer[i].text
                                 tweet.tweetID = favoriteListViewer[i].id_str
                                 
+                                var tweetImages: [String] = []
+                                //画像を保存
+                                if let media = favoriteListViewer[i].extended_entities {
+                                    
+                                    for j in 0 ..< media.media.count {
+                                        let image = Extended_Entities()
+                                        image.image = media.media[j].media_url_https
+                                        tweet.picImage.append(image)
+                                        
+                                        tweetImages.append(image.image)
+                                        print("image保存 \(tweet.picImage[j].image)")
+                                    }
+                                }
+                                
                                 //Realmへ書き込み
                                 try! self.realmLikesList.write {
+                                    
                                     self.realmLikesList.add(tweet)
                                 }
                                 
+                                
                                 //
                                 self.showTweetItems.append(tweet)
+                                self.showTweetImages.append(tweetImages)
                             }
                             //Table Viewの更新
                             print("表示件数 = \(self.showTweetItems.count)")
@@ -407,12 +431,18 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     
     //セルの高さ
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 125
+        return 500
     }
     
     //セルタップ時の挙動
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(showTweetItems[indexPath.row].tweetID)
+        
+        print("タップしたツイート情報")
+        print("ユーザー名 -> \(showTweetItems[indexPath.row].userName)")
+        print("ユーザーID -> \(showTweetItems[indexPath.row].userID)")
+        print("画像枚数 -> \(showTweetImages[indexPath.row].count)")
+        print("1枚目の画像 -> \(showTweetImages[indexPath.row])")
         
         //
         if showTweetItems[indexPath.row].judge {
@@ -429,16 +459,11 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             }
             
         } else{
-            print("スタックへ格納")
             setTweet.append(showTweetItems[indexPath.row])
             try! realmLikesList.write {
                 showTweetItems[indexPath.row].judge = true
             }
-            
-            print(setTweet.count)
         }
- 
-        
     }
     
     
@@ -447,7 +472,12 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         let cell = tableView.dequeueReusableCell(withIdentifier: "timeLineCell") as! CustomTableViewCell
         
         let tweet = showTweetItems[indexPath.row]
-        cell.setCell(name: tweet.userName, id: tweet.userID, content: tweet.content, iconImage: UIImage(url: tweet.userIcon))
+        
+        cell.setCell(name: tweet.userName, id: tweet.userID, content: tweet.content, iconImage: UIImage(url: tweet.userIcon),images: showTweetImages[indexPath.row])
+        
+        cell.contentView.addSubview(testView)
+        
+        cell.delegate = self
         
         return cell
     }

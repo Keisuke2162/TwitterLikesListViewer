@@ -25,6 +25,8 @@
 		E78F7E8E2452401D00DF6E4A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */; };
 		E78F7E90245240D700DF6E4A /* LikesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E8F245240D700DF6E4A /* LikesListViewController.swift */; };
 		E78F7E92245241AF00DF6E4A /* TimeLineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */; };
+		E7D9D795245C2F5100C5ED96 /* ImageVewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9D794245C2F5100C5ED96 /* ImageVewerViewController.swift */; };
+		E7D9D797245C6D8900C5ED96 /* TESTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9D796245C6D8900C5ED96 /* TESTViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +52,8 @@
 		E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E78F7E8F245240D700DF6E4A /* LikesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikesListViewController.swift; sourceTree = "<group>"; };
 		E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineViewController.swift; sourceTree = "<group>"; };
+		E7D9D794245C2F5100C5ED96 /* ImageVewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVewerViewController.swift; sourceTree = "<group>"; };
+		E7D9D796245C6D8900C5ED96 /* TESTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,12 +109,14 @@
 				E78F7E74245222C300DF6E4A /* AppDelegate.swift */,
 				E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */,
 				E78F7E78245222C300DF6E4A /* ViewController.swift */,
+				E7D9D796245C6D8900C5ED96 /* TESTViewController.swift */,
+				E7D9D794245C2F5100C5ED96 /* ImageVewerViewController.swift */,
 				E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */,
 				E741E49B245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift */,
-				E742C2FF2456274D00F3D0DE /* TweetManagement.swift */,
 				E742C3032457AB4A00F3D0DE /* GeneralViewController.swift */,
 				E742C3012456341200F3D0DE /* UserDefault.swift */,
 				E741E4A92454F58900C2A7EC /* TweetData.swift */,
+				E742C2FF2456274D00F3D0DE /* TweetManagement.swift */,
 				E741E4A32454A4C900C2A7EC /* CustomTableViewCell.swift */,
 				E78F7E7A245222C300DF6E4A /* Main.storyboard */,
 				E78F7E80245222C600DF6E4A /* Assets.xcassets */,
@@ -240,6 +246,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7D9D795245C2F5100C5ED96 /* ImageVewerViewController.swift in Sources */,
 				E78F7E7F245222C300DF6E4A /* TwitterLikesListViewer.xcdatamodeld in Sources */,
 				E741E4AA2454F58900C2A7EC /* TweetData.swift in Sources */,
 				E741E49C245330DD00C2A7EC /* Login_APIrequest_Backup_ViewController.swift in Sources */,
@@ -252,6 +259,7 @@
 				E742C3022456341200F3D0DE /* UserDefault.swift in Sources */,
 				E741E49A2453037500C2A7EC /* APIrequest.swift in Sources */,
 				E78F7E92245241AF00DF6E4A /* TimeLineViewController.swift in Sources */,
+				E7D9D797245C6D8900C5ED96 /* TESTViewController.swift in Sources */,
 				E741E4A42454A4C900C2A7EC /* CustomTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -60,6 +60,8 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
         
         let viewTitle = self.title!
         
+        showTweetItems = []
+        
         //Realmからカテゴライズしたツイートを取得
         tweetList = realm.objects(CategoriseItem.self)
         
@@ -94,9 +96,10 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         
+        /*
         let tweetContent = showTweetItems[indexPath.row]
-        cell.setCell(name: tweetContent.userName, id: tweetContent.userID, content: tweetContent.content, iconImage: UIImage(url: tweetContent.userIcon))
-        
+        cell.setCell(name: tweetContent.userName, id: tweetContent.userID, content: tweetContent.content, iconImage: UIImage(url: tweetContent.userIcon),images: [])
+        */
         return cell
     }
     

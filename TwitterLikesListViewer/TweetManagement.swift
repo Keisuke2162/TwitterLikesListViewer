@@ -11,7 +11,6 @@ import RealmSwift
 
 class TweetItem: Object {
     
-
     @objc dynamic var userIcon: String = ""
     @objc dynamic var userName: String = ""
     @objc dynamic var userID: String = ""
@@ -19,10 +18,18 @@ class TweetItem: Object {
     @objc dynamic var content: String = ""
     @objc dynamic var tweetID: String = ""
     
-    
     @objc dynamic var judge: Bool = false
     
+    let picImage = List<Extended_Entities>()
+    
 }
+
+class Extended_Entities: Object {
+    @objc dynamic var image: String = ""
+    
+}
+
+
 
 class CategoriseItem: Object {
     

@@ -12,8 +12,7 @@ import RealmSwift
 
 class ViewController: UIViewController, DoingViewController {
 
-    
-    
+
     var pageMenuController: PMKPageMenuController? = nil
     
     var category: [String] = []
@@ -28,7 +27,14 @@ class ViewController: UIViewController, DoingViewController {
         // Do any additional setup after loading the view.
         
         print("setViewController")
-
+        
+        /*
+        //テスト用
+        let testImageViewer: TESTViewController = TESTViewController()
+        testImageViewer.title = "TEST"
+        controllers.append(testImageViewer)
+        */
+        
         
         //項目設定画面
         let generalView: GeneralViewController = GeneralViewController()
@@ -51,10 +57,9 @@ class ViewController: UIViewController, DoingViewController {
             
             controllers.append(viewController)
         }
-
         
         let statusBarHeight: CGFloat = view.frame.height * 0.05
-        pageMenuController = PMKPageMenuController(controllers: controllers, menuStyle: .Plain, menuColors: [], topBarHeight: statusBarHeight)
+        pageMenuController = PMKPageMenuController(controllers: controllers, menuStyle: .Tab, menuColors: [], topBarHeight: statusBarHeight)
         self.addChild(pageMenuController!)
         self.view.addSubview(pageMenuController!.view)
         pageMenuController?.didMove(toParent: self)
