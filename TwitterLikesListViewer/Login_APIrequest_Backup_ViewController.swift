@@ -73,8 +73,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     //カテゴリボタン用配列
     var categoryButtonArray: [CustomButton] = []
     
-    let testView = UIView()
-    
+    //タイムラインの画像等表示用
+    var imageFrame: [[CGRect]] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,9 +82,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         
         //Twitter
         provider = OAuthProvider(providerID: "twitter.com")
-        
-        testView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
-        testView.backgroundColor = .red
         
         //*****************UI設定*********************
         //tableView描画
@@ -431,7 +428,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     
     //セルの高さ
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 500
+        
+        return 310
     }
     
     //セルタップ時の挙動
@@ -475,8 +473,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         
         cell.setCell(name: tweet.userName, id: tweet.userID, content: tweet.content, iconImage: UIImage(url: tweet.userIcon),images: showTweetImages[indexPath.row])
         
-        cell.contentView.addSubview(testView)
-        
         cell.delegate = self
         
         return cell
@@ -508,4 +504,7 @@ class CustomButton: UIButton {
     var categoryTitle: String?
     var buttonBool: Bool = false
     var setNum: Int?
+    
+    //twitterURL用
+    var twitterURL: String?
 }
