@@ -26,9 +26,22 @@ class TweetItem: Object {
 
 class Extended_Entities: Object {
     @objc dynamic var image: String = ""
+    @objc dynamic var type: String = ""
     
+    //@objc dynamic var video_info: Video_Info? = nil
 }
 
+/*
+class Video_Info: Object {
+    let variants = List<Variants>()
+}
+
+class Variants: Object {
+    @objc dynamic var bitrate: Int = 0
+    @objc dynamic var content_type: String = ""
+    @objc dynamic var url = ""
+}
+*/
 
 
 class CategoriseItem: Object {
@@ -42,6 +55,8 @@ class CategoriseItem: Object {
     
     //ツイートが選択されたどうか判定用
     @objc dynamic var judge: Bool = false
+    
+    var picImage = List<Extended_Entities>()
     
     //カテゴリ名
     @objc dynamic var category: String?

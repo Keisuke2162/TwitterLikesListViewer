@@ -13,6 +13,8 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
     
     //表示用配列
     var showTweetItems: [CategoriseItem] = []
+    //画像表示用配列
+    var showTweetImages: [[String]] = []
     
     var tableView:UITableView!
     
@@ -23,7 +25,6 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
     var realm = try! Realm()
     //カテゴライズしたツイートのアイテムリスト
     var tweetList: Results<CategoriseItem>!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,9 +66,13 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
         //Realmからカテゴライズしたツイートを取得
         tweetList = realm.objects(CategoriseItem.self)
         
+        //カテゴライズツイートの中から該当カテゴリと一致するデータを抽出
+        //Realmからの取得段階でフィルターかける方がいいかも
         for i in 0 ..< tweetList.count {
             if tweetList[i].category! == viewTitle {
                 showTweetItems.append(tweetList[i])
+                
+                
             }
         }
         

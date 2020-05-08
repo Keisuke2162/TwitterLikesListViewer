@@ -7,10 +7,9 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
-    
-    //var imageURLs: [String] = []
     
     var scrollView = UIScrollView()
     var pageControll = UIPageControl()
@@ -21,92 +20,143 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
     var minZoom: CGFloat = 1.0
     var maxZoom: CGFloat = 1.0
     
-    var imageNames: [String] = []
+    var width: CGFloat = 0
+    var height: CGFloat = 0
+    
+    
+    var imageInformation: [MediaInfomation] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .yellow
-        print("表示画像→\(imageNames[0])")
         
-        /*
-        let imageView = UIImageView()
-        imageView.image = UIImage(url: imageNames[0])
-        imageView.frame = view.bounds
+        width = view.frame.width
+        height = view.frame.height
         
-        view.addSubview(imageView)
-        */
-        
-        pageNum = imageNames.count
-        
-        setupPageControll()
-        
-        setupScrollView()
-        print("ScrollView Width = \(scrollView.contentSize.width)")
-        print("ScrollView Height = \(scrollView.contentSize.height)")
-        print("image ---> \(imageNames[0])")
-        
-        for i in 0 ..< pageNum {
-            print("i = \(i)")
-            let subScrollView = MakeSubScroll(at: i)
-            scrollView.addSubview(subScrollView)
+        //動画は1件のみしか投稿できないため配列の先頭のみ比較する
+        if imageInformation[0].type == "video" || imageInformation[0].type == "animated_gif"{
             
-            let imageView = MakeImageView(at: i)
-            subScrollView.addSubview(imageView)
+            print("Video です")
+            
+            let url = URL(string: imageInformation[0].imageURL)
+            //let url = URL(string: testURL)
+            let player = AVPlayer(url: url!)
+            
+            let playerLayer = AVPlayerLayer(player: player)
+            //playerLayer.frame = self.view.bounds
+            playerLayer.frame = CGRect(x: 0, y: height * 0.1, width: width, height: height * 0.8)
+            self.view.layer.addSublayer(playerLayer)
+            
+            player.play()
+            
+        } else {
+            
+            //表示タイプが動画以外の場合
+            pageNum = imageInformation.count
+            
+            setupPageControll()
+            
+            setupScrollView()
+            
+            for i in 0 ..< pageNum {
+                
+                //通常画像の場合
+                print("Imageです")
+                let subScrollView = MakeSubScroll(at: i)
+                scrollView.addSubview(subScrollView)
+                
+                let imageView = MakeImageView(at: i)
+                subScrollView.addSubview(imageView)
+                
+                /*
+                //GIFの場合
+                if imageInformation[i].type == "animated_gif" {
+                    print("GIFです")
+                    let subScrollView = MakeSubScroll(at: i)
+                    scrollView.addSubview(subScrollView)
+                    
+                    //let imageView = MakeImageView(at: i)
+                    //subScrollView.addSubview(imageView)
+                    
+                    let gifView = MakeGifMovie(at: i)
+                    subScrollView.layer.addSublayer(gifView)
+                    
+                } else {
+                    //通常画像の場合
+                    print("Imageです")
+                    let subScrollView = MakeSubScroll(at: i)
+                    scrollView.addSubview(subScrollView)
+                    
+                    let imageView = MakeImageView(at: i)
+                    subScrollView.addSubview(imageView)
+                }
+                */
+            }
+            
+            scrollView.contentOffset = CGPoint(x: scrollView.bounds.width * CGFloat(currentPage), y: 0)
+            
+            view.addSubview(scrollView)
+            view.addSubview(pageControll)
+            
         }
         
-        print("current --> \(currentPage)")
-        print("contentOFFset -> \(scrollView.bounds.width * CGFloat(currentPage))")
-        scrollView.contentOffset = CGPoint(x: scrollView.bounds.width * CGFloat(currentPage), y: 0)
-        /*
-        (0 ..< pageNum).forEach { page in
-            let subScrollView = MakeSubScroll(at: page)
-            
-            let imageView = MakeImageView(at: page)
-            subScrollView.addSubview(imageView)
-            
-            scrollView.addSubview(subScrollView)
-        }
- */
         
-        //setImages(imageArray: imageURLs)
-        
-        view.addSubview(scrollView)
-        view.addSubview(pageControll)
-        
+        let returnButton = UIButton()
+        returnButton.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
+        returnButton.backgroundColor = .red
+        returnButton.addTarget(self, action: #selector(ReturnView), for: .touchUpInside)
+        view.addSubview(returnButton)
 
         // Do any additional setup after loading the view.
     }
     
-    /*
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    let playerLayer = AVPlayerLayer()
+    
+    func MakeMovie(url: String, frame: CGRect) {
+        print("Video作成します")
         
-        setupScrollView()
+        let url = URL(string: imageInformation[0].imageURL)
+        let player = AVPlayer(url: url!)
         
+        //let playerLayer = AVPlayerLayer(player: player)
+        //playerLayer.frame = self.view.bounds
+        playerLayer.player = player
+        playerLayer.frame = CGRect(x: 0, y: height * 0.1, width: width, height: height * 0.8)
+        self.view.layer.addSublayer(playerLayer)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidReachEnd), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
         
-        (0 ..< pageNum).forEach { page in
-            let subScrollView = MakeSubScroll(at: page)
-            
-            
-            let imageView = MakeImageView(at: page)
-            subScrollView.addSubview(imageView)
-            
-            scrollView.addSubview(subScrollView)
-        }
-        
-        //setImages(imageArray: imageURLs)
-        
-        view.addSubview(scrollView)
-        view.addSubview(pageControll)
+        player.play()
     }
-    */
+    
+    
+    //GIF動画再生終了時
+    @objc func playerItemDidReachEnd(_ notification: Notification) {
+        // 動画を最初に巻き戻す
+        self.playerLayer.player?.currentItem?.seek(to: CMTime.zero, completionHandler: nil)
+    }
+    
+    //画面を戻る
+    @objc func ReturnView() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func MakeGifMovie(at page: Int) -> AVPlayerLayer {
+        let frame = scrollView.bounds
+        
+        let url = URL(string: imageInformation[page].imageURL)
+        let player = AVPlayer(url: url!)
+        let playerLayer = AVPlayerLayer(player: player)
+        
+        playerLayer.frame = frame
+        player.play()
+        
+        return playerLayer
+    }
     //表示する写真をもとにImageView作成
     func MakeImageView(at page: Int) -> UIImageView {
         let frame = scrollView.bounds
-        print("frame X\(frame.origin.x)")
-        print("frame Y\(frame.origin.y)")
         let imageView = UIImageView(frame: frame)
         
         imageView.contentMode = .scaleAspectFit
@@ -117,8 +167,7 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func image(at page: Int) -> UIImage? {
-        print("image -> \(imageNames[page])")
-        return UIImage(url: imageNames[page])
+        return UIImage(url: imageInformation[page].imageURL)
     }
     
     //サブスクロールViewを作成する
@@ -191,6 +240,11 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
     
     func setImages(imageArray: [String]) {
         
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
     /*

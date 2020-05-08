@@ -9,7 +9,8 @@
 import UIKit
 
 protocol CustomCellDelegate {
-    func MoveImageViewer(sender: [String], currentPage: Int)
+    func MoveImageViewer(sender: [MediaInfomation], currentPage: Int)
+    func TweetChecked(row: Int, judge: Bool)
 }
 
 class CustomTableViewCell: UITableViewCell {
@@ -22,11 +23,26 @@ class CustomTableViewCell: UITableViewCell {
     var contentLabel = UILabel()
     var contentPic = UIImageView()
     
-    let imageViewer = UIView()
+    //let imageViewer = UIView()
     
-    var imageURLs: [String] = []
+    let firstThingButton = CustomButton()
+    let secondThingButton = CustomButton()
+    let thirdThingButton = CustomButton()
+    let fourthThingButton = CustomButton()
     
-    var twitterButton = CustomButton()
+    //let videoButton = CustomButton()
+    
+    var thingButtons: [CustomButton] = []
+    
+    var imageURLs: [MediaInfomation] = []
+    
+    //var twitterButton = CustomButton()
+    
+    var checkButton = UIButton()
+    
+    var checkBool: Bool = false
+    
+    var row: Int = 0
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -48,9 +64,16 @@ class CustomTableViewCell: UITableViewCell {
         contentView.addSubview(userID)
         contentView.addSubview(contentPic)
         
-        contentView.addSubview(imageViewer)
+        //contentView.addSubview(imageViewer)
         
-        contentView.addSubview(twitterButton)
+        contentView.addSubview(firstThingButton)
+        contentView.addSubview(secondThingButton)
+        contentView.addSubview(thirdThingButton)
+        contentView.addSubview(fourthThingButton)
+        
+        //contentView.addSubview(twitterButton)
+        contentView.addSubview(checkButton)
+        //contentView.addSubview(videoButton)
     }
     
     required init?(coder: NSCoder) {
@@ -66,39 +89,104 @@ class CustomTableViewCell: UITableViewCell {
         iconImageView.clipsToBounds = true
         
         //ユーザー名
-        userName.frame = CGRect(x: 100, y: 0, width: self.frame.width - 100, height: 30)
+        userName.frame = CGRect(x: 100, y: 0, width: self.frame.width - 170, height: 30)
         
         //ユーザーID
-        userID.frame = CGRect(x: 100, y: 30, width: self.frame.width - 100, height: 20)
+        userID.frame = CGRect(x: 100, y: 30, width: self.frame.width - 170, height: 20)
         userID.textColor = .gray
         
         //ツイート内容
-        contentLabel.frame = CGRect(x: 100, y: 50, width: self.frame.width - 100, height: 75)
+        contentLabel.frame = CGRect(x: 100, y: 50, width: self.frame.width - 125, height: 75)
         contentLabel.lineBreakMode = .byWordWrapping
         contentLabel.numberOfLines = 0
+        contentLabel.sizeToFit()
         
         //
-        imageViewer.layer.cornerRadius = 20.0
-        imageViewer.frame = CGRect(x: 100, y: 130, width: self.frame.width - 120, height: 180)
+        let buttonFrameY = contentLabel.frame.origin.y + contentLabel.frame.height + 10
         
+        firstThingButton.frame = CGRect(x: 100, y: buttonFrameY, width: 55, height: 55)
+        firstThingButton.tag = 0
+        //firstThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
+        //firstThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
+        firstThingButton.layer.cornerRadius = 27.5
+        //firstThingButton.setImage(UIImage(named: "camera"), for: .normal)
+        firstThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        //firstThingButton.isHidden = true
+        
+        secondThingButton.frame = CGRect(x: 110 + 55, y: buttonFrameY, width: 55, height: 55)
+        secondThingButton.tag = 1
+        //secondThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
+        //secondThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
+        secondThingButton.layer.cornerRadius = 27.5
+        //secondThingButton.setImage(UIImage(named: "camera"), for: .normal)
+        secondThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        //secondThingButton.isHidden = true
+        
+        thirdThingButton.frame = CGRect(x: 120 + 110, y: buttonFrameY, width: 55, height: 55)
+        thirdThingButton.tag = 2
+        //thirdThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
+        //thirdThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
+        thirdThingButton.layer.cornerRadius = 27.5
+        //thirdThingButton.setImage(UIImage(named: "camera"), for: .normal)
+        thirdThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        //thirdThingButton.isHidden = true
+        
+        fourthThingButton.frame = CGRect(x: 130 + 165, y: buttonFrameY, width: 55, height: 55)
+        fourthThingButton.tag = 3
+        //fourthThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
+        //fourthThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
+        fourthThingButton.layer.cornerRadius = 27.5
+        //fourthThingButton.setImage(UIImage(named: "camera"), for: .normal)
+        fourthThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        //fourthThingButton.isHidden = true
+        
+        /*
         //twitterで開くボタン
         twitterButton.frame = CGRect(x: 25, y: 90, width: 50, height: 50)
-        twitterButton.backgroundColor = .blue
+        //twitterButton.backgroundColor = .blue
         twitterButton.layer.cornerRadius = 25
+        twitterButton.setImage(UIImage(named: "twitter"), for: .normal)
+        twitterButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        */
         
+        //チェックボックス
+        checkButton.frame = CGRect(x: self.frame.width - 50, y: 10, width: 40, height: 40)
+        checkButton.backgroundColor = UIColor(colorCode: "1DA1F2")
+        checkButton.layer.cornerRadius = 20
+        //checkButton.setImage(UIImage(named: "check"), for: .normal)
+        checkButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        checkButton.addTarget(self, action: #selector(TapedCheckButton), for: .touchUpInside)
+        
+        /*
+        //動画ボタン
+        videoButton.frame = CGRect(x: 100, y: buttonFrameY, width: self.frame.width / 7.5, height: self.frame.width / 7.5)
+        videoButton.tag = 0
+        videoButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
+        videoButton.backgroundColor = UIColor(colorCode: "FF0000")
+        videoButton.layer.cornerRadius = self.frame.width / 15
+        videoButton.setImage(UIImage(named: "video"), for: .normal)
+        videoButton.imageEdgeInsets = UIEdgeInsets(top: 17, left: 17, bottom: 17, right: 17)
+        //videoButton.isHidden = true
+        */
     }
     
     override func prepareForReuse() {
+        firstThingButton.isHidden = true
+        secondThingButton.isHidden = true
+        thirdThingButton.isHidden = true
+        fourthThingButton.isHidden = true
         
+        //videoButton.isHidden = true
     }
     
     
-    func setCell(name: String, id: String, content: String?, iconImage: UIImage, images: [String]) {
+    func setCell(name: String, id: String, content: String?, iconImage: UIImage, images: [MediaInfomation], judge: Bool) {
         
         iconImageView.image = iconImage
         userName.text = name
         userID.text = id
         imageURLs = images
+        checkBool = judge
         
         if let content = content {
             contentLabel.text = content
@@ -107,166 +195,61 @@ class CustomTableViewCell: UITableViewCell {
             contentLabel.text = ""
         }
         
-        //imageViewer上の画像を削除
-        let subView = imageViewer.subviews
-        for sub in subView {
-            sub.removeFromSuperview()
+        if checkBool {
+            checkButton.setImage(UIImage(named: "check"), for: .normal)
+        } else {
+            checkButton.setImage(nil, for: .normal)
         }
         
-        switch images.count {
-        case 0:
-            imageViewer.isHidden = true
-            
-            break
-        case 1:
-            imageViewer.frame = CGRect(x: 100, y: 130, width: self.frame.width - 120, height: 180)
-            
-            let image = UIButton(frame: CGRect(x: 0, y: 0, width: imageViewer.frame.width, height: imageViewer.frame.height))
-            image.backgroundColor = .red
-            image.tag = 0
-            
-            //let setImage = trimmingImage(UIImage(url: imageURLs[0]), trimmingArea: image.frame)
-            let setImage = resizeUIImageByWidth(image: UIImage(url: imageURLs[0]), width: Double(image.frame.width))
-            let trimImage = trimmingImage(setImage, trimmingArea: image.frame)
-            image.setImage(trimImage, for: .normal)
-            image.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            
-            imageViewer.addSubview(image)
-            
-            
-            break
-        case 2:
-            imageViewer.frame = CGRect(x: 100, y: 130, width: self.frame.width - 120, height: 180)
-            
-            let image_one = UIButton(frame: CGRect(x: 0, y: 0, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height))
-            let image_two = UIButton(frame: CGRect(x: imageViewer.frame.width / 2 + 5, y: 0, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height))
-            
-            let imageArray: [UIButton] = [image_one, image_two]
-            
-            for i in 0 ..< imageArray.count {
-                let setImage = resizeUIImageByWidth(image: UIImage(url: imageURLs[i]), width: Double(imageArray[i].frame.width))
-                let trimImage = trimmingImage(setImage, trimmingArea: imageArray[i].frame)
+        
+        thingButtons = [firstThingButton, secondThingButton, thirdThingButton, fourthThingButton]
+        
+        for i in 0 ..< imageURLs.count {
+            if imageURLs[i].type == "video" {
+                //videoButton.isHidden = false
+                thingButtons[i].isHidden = false
+                thingButtons[i].setImage(UIImage(named: "video"), for: .normal)
+                thingButtons[i].backgroundColor = UIColor(colorCode: "FF0000")
+                thingButtons[i].addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
                 
-                imageArray[i].setImage(trimImage, for: .normal)
+                
+            } else if imageURLs[i].type == "animated_gif" {
+                thingButtons[i].isHidden = false
+                thingButtons[i].setImage(UIImage(named: "gif"), for: .normal)
+                thingButtons[i].backgroundColor = UIColor(colorCode: "1DA1F2")
+                thingButtons[i].addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
+                
+                //print(imageURLs[i].imageURL)
+                
+            } else {
+                thingButtons[i].isHidden = false
+                thingButtons[i].setImage(UIImage(named: "camera"), for: .normal)
+                thingButtons[i].backgroundColor = UIColor(colorCode: "1DA1F2")
+                thingButtons[i].addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
+                
             }
             
-            image_one.tag = 0
-            image_two.tag = 1
-            
-            image_one.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            image_two.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            
-            imageViewer.addSubview(image_one)
-            imageViewer.addSubview(image_two)
-            
-            break
-        case 3:
-            imageViewer.frame = CGRect(x: 100, y: 130, width: self.frame.width - 120, height: 180)
-            
-            let image_one = UIButton(frame: CGRect(x: 0, y: 0, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height))
-            let image_two = UIButton(frame: CGRect(x: imageViewer.frame.width / 2 + 5, y: 0, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height / 2 - 5))
-            let image_thr = UIButton(frame: CGRect(x: imageViewer.frame.width / 2 + 5, y: imageViewer.frame.height / 2 + 5, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height / 2 - 5))
-            
-            let imageArray: [UIButton] = [image_one, image_two, image_thr]
-            
-            for i in 0 ..< imageArray.count {
-                let setImage = resizeUIImageByWidth(image: UIImage(url: imageURLs[i]), width: Double(imageArray[i].frame.width))
-                let trimImage = trimmingImage(setImage, trimmingArea: imageArray[i].frame)
-                
-                imageArray[i].setImage(trimImage, for: .normal)
-            }
-            
-            image_one.tag = 0
-            image_two.tag = 1
-            image_thr.tag = 2
-            
-            image_one.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            image_two.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            image_thr.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            
-            imageViewer.addSubview(image_one)
-            imageViewer.addSubview(image_two)
-            imageViewer.addSubview(image_thr)
-            
-            break
-        case 4:
-            imageViewer.frame = CGRect(x: 100, y: 130, width: self.frame.width - 120, height: 180)
-            
-            let image_one = UIButton(frame: CGRect(x: 0, y: 0, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height / 2 - 5))
-            let image_two = UIButton(frame: CGRect(x: imageViewer.frame.width / 2 + 5, y: 0, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height / 2 - 5))
-            let image_thr = UIButton(frame: CGRect(x: 0, y: imageViewer.frame.height / 2 + 5, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height / 2 - 5))
-            let image_fou = UIButton(frame: CGRect(x: imageViewer.frame.width / 2 + 5, y: imageViewer.frame.height / 2 + 5, width: imageViewer.frame.width / 2 - 5, height: imageViewer.frame.height / 2 - 5))
-            
-            let imageArray: [UIButton] = [image_one, image_two, image_thr, image_fou]
-            
-            for i in 0 ..< imageArray.count {
-                let setImage = resizeUIImageByWidth(image: UIImage(url: imageURLs[i]), width: Double(imageArray[i].frame.width))
-                let trimImage = trimmingImage(setImage, trimmingArea: imageArray[i].frame)
-                
-                imageArray[i].setImage(trimImage, for: .normal)
-            }
-            
-            image_one.tag = 0
-            image_two.tag = 1
-            image_thr.tag = 2
-            image_fou.tag = 3
-            
-            image_one.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            image_two.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            image_thr.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            image_fou.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-            
-            imageViewer.addSubview(image_one)
-            imageViewer.addSubview(image_two)
-            imageViewer.addSubview(image_thr)
-            imageViewer.addSubview(image_fou)
-            
-            break
-        default:
-            print("Error")
         }
+        
     }
     
+    
     @objc func TapedImage(_ sender: UIButton) {
-        print(sender.tag)
+        //print(sender.tag)
         delegate?.MoveImageViewer(sender: imageURLs, currentPage: sender.tag)
         
     }
     
-    //画像をトリミングする
-    func trimmingImage(_ image: UIImage, trimmingArea: CGRect) -> UIImage {
-        //let trimming = CGRect(x: image.size.width / 2 - (trimmingArea.width / 2), y: image.size.height / 2 - (trimmingArea.height / 2), width: trimmingArea.width, height: trimmingArea.height)
-        let trimming = CGRect(x: 0, y: image.size.height / 2 - (trimmingArea.height / 2), width: image.size.width, height: trimmingArea.height)
-        let imgRef = image.cgImage?.cropping(to: trimming)
-        let trimImage = UIImage(cgImage: imgRef!, scale: image.scale, orientation: image.imageOrientation)
-        return trimImage
-    }
-    /*
-    func imageTrimming(_ URLs: [String]) -> UIImage {
-        
-        for i in 0 ..< URLs.count {
-            let imageRef = UIImage(url: URLs[i]).cgImage?.cropping(to: imageRects[i])
+    //チェックボタンを押した時
+    @objc func TapedCheckButton() {
+        delegate?.TweetChecked(row: row, judge: false)
+        if checkBool {
+            checkButton.setImage(nil, for: .normal)
+            checkBool = false
+        } else{
+            checkButton.setImage(UIImage(named: "check"), for: .normal)
+            checkBool = true
         }
-    }
-    */
-    
-    /**
-     * 横幅を指定してUIImageをリサイズする
-     * @params image: 対象の画像
-     * @params width: 基準となる横幅
-     * @return 横幅をwidthに、縦幅はアスペクト比を保持したサイズにリサイズしたUIImage
-    */
-    func resizeUIImageByWidth(image: UIImage, width: Double) -> UIImage {
-      // オリジナル画像のサイズから、アスペクト比を計算
-      let aspectRate = image.size.height / image.size.width
-      // リサイズ後のWidthをアスペクト比を元に、リサイズ後のサイズを取得
-      let resizedSize = CGSize(width: width, height: width * Double(aspectRate))
-      // リサイズ後のUIImageを生成して返却
-      UIGraphicsBeginImageContext(resizedSize)
-      image.draw(in: CGRect(x: 0, y: 0, width: resizedSize.width, height: resizedSize.height))
-      let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
-      UIGraphicsEndImageContext()
-      return resizedImage!
     }
 }
 

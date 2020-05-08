@@ -63,19 +63,36 @@ class GeneralViewController: UIViewController, UITableViewDelegate, UITableViewD
         
     }
     
-    
+    //追加ボタン押下
     @objc func AddViewTitle() {
         if let title = settingField.text?.trimmingCharacters(in: .whitespaces) {
             settingField.text = ""
+            var checkResult: Bool = true
+            
+            //タイトル名空チェック
             if title != "" {
-                viewArray.append(title)
-                tableView.reloadData()
                 
-                database.SaveValue(array: viewArray)
-                print("Add")
+                //同名タイトルチェック
+                for viewTitleList in viewArray {
+                    if title == viewTitleList {
+                        print("既に有る名前です")
+                        checkResult = false
+                        break
+                    }
+                    
+                }
                 
-                if let del = addViewController {
-                    del.AddViewControlle()
+                //チェック合格ならView追加
+                if checkResult {
+                    viewArray.append(title)
+                    tableView.reloadData()
+                    
+                    database.SaveValue(array: viewArray)
+                    print("Add")
+                    
+                    if let del = addViewController {
+                        del.AddViewControlle()
+                    }
                 }
             }
         }

@@ -34,14 +34,38 @@ struct Favorite: Decodable {
         
         struct Media: Decodable {
             let media_url_https: String
+            let type: String
+            let video_info: Video_info?
             
             enum CodingKeys: String, CodingKey {
                 case media_url_https = "media_url_https"
+                case type = "type"
+                case video_info = "video_info"
             }
         }
         
         enum CodingKeys: String, CodingKey {
             case media = "media"
+        }
+    }
+    
+    struct Video_info: Decodable {
+        let variants: [variants]
+        
+        enum CodingKeys: String, CodingKey {
+            case variants = "variants"
+        }
+    }
+    
+    struct variants: Decodable {
+        let bitrate: Int?
+        let content_type: String
+        let url: String
+        
+        enum CodingKeys: String, CodingKey {
+            case bitrate = "bitrate"
+            case content_type = "content_type"
+            case url = "url"
         }
     }
     

@@ -8,6 +8,7 @@
 
 import Foundation
 
+//初回起動確認
 class FirstViewCheck {
     let firstViewValue = UserDefaults.standard
     
@@ -24,6 +25,7 @@ class FirstViewCheck {
     }
 }
 
+//Twitterの認証キー
 class TwitterKeys {
     let twitterKeyValue = UserDefaults.standard
     
@@ -44,6 +46,7 @@ class TwitterKeys {
     }
 }
 
+//カテゴリー一覧
 class ViewCategory{
     let categoryValue = UserDefaults.standard
     
