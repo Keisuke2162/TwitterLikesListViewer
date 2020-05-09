@@ -27,6 +27,7 @@
 		E78F7E92245241AF00DF6E4A /* TimeLineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */; };
 		E7D77B5F24616965007E5869 /* CustomClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D77B5E24616965007E5869 /* CustomClass.swift */; };
 		E7D77B61246338CC007E5869 /* WebTweetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D77B60246338CC007E5869 /* WebTweetViewController.swift */; };
+		E7D77B852466609D007E5869 /* CategoryChoiseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D77B842466609D007E5869 /* CategoryChoiseViewController.swift */; };
 		E7D9D795245C2F5100C5ED96 /* ImageVewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9D794245C2F5100C5ED96 /* ImageVewerViewController.swift */; };
 		E7D9D797245C6D8900C5ED96 /* TESTViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9D796245C6D8900C5ED96 /* TESTViewController.swift */; };
 		E7D9D799245FE76A00C5ED96 /* ColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7D9D798245FE76A00C5ED96 /* ColorCode.swift */; };
@@ -57,6 +58,7 @@
 		E78F7E91245241AF00DF6E4A /* TimeLineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineViewController.swift; sourceTree = "<group>"; };
 		E7D77B5E24616965007E5869 /* CustomClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomClass.swift; sourceTree = "<group>"; };
 		E7D77B60246338CC007E5869 /* WebTweetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebTweetViewController.swift; sourceTree = "<group>"; };
+		E7D77B842466609D007E5869 /* CategoryChoiseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryChoiseViewController.swift; sourceTree = "<group>"; };
 		E7D9D794245C2F5100C5ED96 /* ImageVewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageVewerViewController.swift; sourceTree = "<group>"; };
 		E7D9D796245C6D8900C5ED96 /* TESTViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TESTViewController.swift; sourceTree = "<group>"; };
 		E7D9D798245FE76A00C5ED96 /* ColorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCode.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 		E78F7E73245222C300DF6E4A /* TwitterLikesListViewer */ = {
 			isa = PBXGroup;
 			children = (
+				E7D77B842466609D007E5869 /* CategoryChoiseViewController.swift */,
 				E78F7E74245222C300DF6E4A /* AppDelegate.swift */,
 				E78F7E8D2452401D00DF6E4A /* SceneDelegate.swift */,
 				E78F7E78245222C300DF6E4A /* ViewController.swift */,
@@ -272,6 +275,7 @@
 				E741E49A2453037500C2A7EC /* APIrequest.swift in Sources */,
 				E78F7E92245241AF00DF6E4A /* TimeLineViewController.swift in Sources */,
 				E7D9D797245C6D8900C5ED96 /* TESTViewController.swift in Sources */,
+				E7D77B852466609D007E5869 /* CategoryChoiseViewController.swift in Sources */,
 				E741E4A42454A4C900C2A7EC /* CustomTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

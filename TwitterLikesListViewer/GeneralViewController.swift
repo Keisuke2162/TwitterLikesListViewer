@@ -128,7 +128,6 @@ class GeneralViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     
     
-    
     func setToolbarTextView() {
         // ツールバー生成 サイズはsizeToFitメソッドで自動で調整される。
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 0, height: 0))

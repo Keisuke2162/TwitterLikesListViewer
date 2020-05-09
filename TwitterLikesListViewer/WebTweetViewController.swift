@@ -25,7 +25,7 @@ class WebTweetViewController: UIViewController {
         
         let webConfigure = WKWebViewConfiguration()
         
-        let frame = CGRect(x: 0, y: 70, width: view.frame.width, height: view.frame.height - 70)
+        let frame = CGRect(x: 0, y: 10, width: view.frame.width, height: view.frame.height - 10)
         webView = WKWebView(frame: frame, configuration: webConfigure)
         
         let webUrl = URL(string: url)
@@ -35,21 +35,20 @@ class WebTweetViewController: UIViewController {
         
         view.addSubview(webView)
         
-        
-        
-        let dismissButton = UIButton()
-        dismissButton.frame = CGRect(x: 20, y: 25, width: 40, height: 40)
-        dismissButton.layer.cornerRadius = 20
-        dismissButton.backgroundColor = .blue
-        dismissButton.addTarget(self, action: #selector(ReturnView), for: .touchUpInside)
-        
-        view.addSubview(dismissButton)
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(ReturnView))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
         
     }
     
     @objc func ReturnView() {
-        dismiss(animated: true, completion: nil)
-    
+        let transition = CATransition()
+        transition.duration = 0.225
+        transition.type = .push
+        transition.subtype = .fromLeft
+        view.window?.layer.add(transition, forKey: kCATransition)
+        
+        dismiss(animated: false, completion: nil)
     }
     
 

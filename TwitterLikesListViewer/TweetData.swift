@@ -8,7 +8,7 @@
 
 import Foundation
 
-//取得データはめる
+//TwitterAPIからの取得データはめる
 struct TwitterSetting: Decodable {
     let language: String
     let screenName: String

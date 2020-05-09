@@ -9,12 +9,26 @@
 import UIKit
 import RealmSwift
 
-class TimeLineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimeLineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
+    
+    func MoveImageViewer(sender: [MediaInfomation], currentPage: Int) {
+        
+        let vc: ImageVewerViewController = ImageVewerViewController()
+        vc.imageInformation = sender
+        vc.currentPage = currentPage
+        vc.modalPresentationStyle = .fullScreen
+        present(vc, animated: true, completion: nil)
+    }
+    
+    func TweetChecked(row: Int, judge: Bool) {
+        print("check")
+    }
+    
     
     //表示用配列
     var showTweetItems: [CategoriseItem] = []
     //画像表示用配列
-    var showTweetImages: [[String]] = []
+    var showTweetImages: [[MediaInfomation]] = []
     
     var tableView:UITableView!
     
@@ -62,6 +76,7 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
         let viewTitle = self.title!
         
         showTweetItems = []
+        showTweetItems = []
         
         //Realmからカテゴライズしたツイートを取得
         tweetList = realm.objects(CategoriseItem.self)
@@ -69,10 +84,22 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
         //カテゴライズツイートの中から該当カテゴリと一致するデータを抽出
         //Realmからの取得段階でフィルターかける方がいいかも
         for i in 0 ..< tweetList.count {
+            
             if tweetList[i].category! == viewTitle {
                 showTweetItems.append(tweetList[i])
                 
+                //画像、GIF、動画情報格納用
+                var mediaArray: [MediaInfomation] = []
+                var media = MediaInfomation()
                 
+                for j in 0 ..< tweetList[i].picImage.count {
+                    media.type = tweetList[i].picImage[j].type
+                    media.imageURL = tweetList[i].picImage[j].image
+                    
+                    mediaArray.append(media)
+                }
+                
+                showTweetImages.append(mediaArray)
             }
         }
         
@@ -98,18 +125,34 @@ class TimeLineViewController: UIViewController, UITableViewDelegate, UITableView
         return showTweetItems.count
     }
     
+    //セルタップ時の挙動
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let vc = WebTweetViewController()
+        let url = "https://twitter.com/" + showTweetItems[indexPath.row].userID + "/status/" + showTweetItems[indexPath.row].tweetID
+        vc.modalPresentationStyle = .fullScreen
+        vc.url = url
+        present(vc, animated: true, completion: nil)
+    }
+    
+    //
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! CustomTableViewCell
         
-        /*
-        let tweetContent = showTweetItems[indexPath.row]
-        cell.setCell(name: tweetContent.userName, id: tweetContent.userID, content: tweetContent.content, iconImage: UIImage(url: tweetContent.userIcon),images: [])
-        */
+        let tweet = showTweetItems[indexPath.row]
+        cell.setCell(name: tweet.userName, id: tweet.userID, content: tweet.content, iconImage: UIImage(url: tweet.userIcon),images: showTweetImages[indexPath.row], judge: false)
+        
+        cell.checkButton.isHidden = true
+        
+        cell.row = indexPath.row
+        
+        cell.delegate = self
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 125
+        return 300
     }
 
 }

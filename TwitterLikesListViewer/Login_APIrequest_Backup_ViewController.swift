@@ -12,13 +12,16 @@ import OAuthSwift
 
 import RealmSwift
 
-class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CustomCellDelegate {
+class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CustomCellDelegate, CategoryChoosed {
+    
     
     func MoveImageViewer(sender: [MediaInfomation], currentPage: Int) {
         let vc: ImageVewerViewController = ImageVewerViewController()
         vc.imageInformation = sender
         vc.currentPage = currentPage
         vc.modalPresentationStyle = .fullScreen
+        
+        //show(vc, sender: nil)
         present(vc, animated: true, completion: nil)
     }
     
@@ -48,6 +51,9 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             }
         }
     }
+    
+    //色一覧
+    var colorArray: [UIColor] = []
     
     
     var provider: OAuthProvider?
@@ -94,7 +100,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     let categoryManage = ViewCategory()
     
     //振り分け用カテゴリ配列
-    var setCategory: [String] = []
+    //var setCategory: [String] = []
+    var categoryArray: [String] = []
     
     //振り分け用ツイート配列
     var setTweet: [TweetItem] = []
@@ -105,6 +112,8 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     //タイムラインの画像等表示用
     var imageFrame: [[CGRect]] = []
     
+    var categoryViewOpenCheck: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -112,59 +121,34 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         //Twitter
         provider = OAuthProvider(providerID: "twitter.com")
         
-        //*****************UI設定*********************
+        //*****************UI設定*********************************************************
         //tableView描画
         tableView = UITableView()
         tableView.frame = self.view.frame
         tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "timeLineCell")
         tableView.dataSource = self
         tableView.delegate = self
+        
         view.addSubview(self.tableView)
         
-        //メニューバー
-        menuView.frame = CGRect(x: 0, y: view.frame.height - 150, width: view.frame.width, height: 70)
+        //リスト表示ボタン
+        let listButton = UIButton()
+        listButton.frame = CGRect(x: view.frame.width - 70, y: view.frame.height - 130, width: 50, height: 50)
+        listButton.backgroundColor = UIColor.dynamicColor(light: .black, dark: .white)
+        listButton.layer.cornerRadius = 25
+        listButton.addTarget(self, action: #selector(MoveCategoryListView), for: .touchUpInside)
         
-        //メニューバーにカテゴリ一覧ボタンを表示
-        //表示の土台となるスクロールView
-        let categoryScroll = UIScrollView()
-        categoryScroll.frame = CGRect(x: 0, y: 0, width: view.frame.width - 70, height: 70)
-        categoryScroll.backgroundColor = .black
-        categoryScroll.layer.borderWidth = 1.0
-        categoryScroll.layer.borderColor = UIColor.white.cgColor
+        view.addSubview(listButton)
         
-        menuView.addSubview(categoryScroll)
-        
-        //カテゴリ一覧を取得
-        category = categoryManage.GetValue()
-        
-        for i in 0 ..< category.count {
-            let cateButton = CustomButton()
-            cateButton.frame = CGRect(x: CGFloat(80 * i) + CGFloat(10 * i) + 10 , y: 10, width: 80, height: 50)
-            cateButton.layer.cornerRadius = 10.0
-            cateButton.layer.borderColor = UIColor.white.cgColor
-            cateButton.layer.borderWidth = 1.0
-            cateButton.setTitle(category[i], for: .normal)
-            cateButton.categoryTitle = category[i]
-            cateButton.tag = i
-            cateButton.backgroundColor = .black
-            cateButton.addTarget(self, action: #selector(TapCategoryButton), for: .touchUpInside)
-            categoryButtonArray.append(cateButton)
-            
-            categoryScroll.addSubview(cateButton)
-        }
-        
-        categoryScroll.contentSize = CGSize(width: CGFloat(80 * category.count) + CGFloat(10 * category.count) + 10, height: 70)
-        
-        //カテゴリ.ツイート決定ボタン
+        //決定ボタン
         let decisionButton = UIButton()
-        decisionButton.frame = CGRect(x: view.frame.width - 70, y: 0, width: 70, height: 70)
-        decisionButton.backgroundColor = .blue
+        decisionButton.frame = CGRect(x: view.frame.width - 140, y: view.frame.height - 130, width: 50, height: 50)
+        decisionButton.backgroundColor = UIColor.dynamicColor(light: .black, dark: .white)
+        decisionButton.layer.cornerRadius = 25
         decisionButton.addTarget(self, action: #selector(TapDecisionButton), for: .touchUpInside)
         
-        
-        menuView.addSubview(decisionButton)
-        view.addSubview(menuView)
-        //********************************************
+        view.addSubview(decisionButton)
+        //******************************************************************************
         
         
         refresh.addTarget(self, action: #selector(TapReload), for: UIControl.Event.valueChanged)
@@ -192,7 +176,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
             itemList = realmLikesList.objects(TweetItem.self)
 
             showTweetItems = []
-            //showTweetImages = []
             showTweetMedias = []
             
             //取得したデータを表示用配列に変換
@@ -215,24 +198,10 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                     media.type = itemList[i].picImage[j].type
                     
                     media.imageURL = itemList[i].picImage[j].image
-                    
-                    /*
-                    if media.type == "animated_gif" {
-                        media.imageURL = itemList[i].picImage[j].video_info!.variants[0].url
-                    } else if media.type == "video" {
-                        media.imageURL = itemList[i].picImage[j].video_info!.variants[0].url
-                    } else {
-                        media.imageURL = itemList[i].picImage[j].image
-                    }
-                    */
-                    
                     mediaArray.append(media)
-                    
-                    //imageArray.append(showItem.picImage[j].image)
                     
                 }
                 showTweetMedias.append(mediaArray)
-                //showTweetImages.append(imageArray)
                 showTweetItems.append(showItem)
             }
             tableView.reloadData()
@@ -240,9 +209,22 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
 
     }
     
+    //カテゴリ一覧画面への遷移
+    @objc func MoveCategoryListView() {
+        let vc = CategoryChoiseViewController()
+        vc.tabColor = colorArray
+        vc.delegate = self
+        vc.checkCategory = categoryArray
+        
+        print(categoryArray)
+        
+        present(vc, animated: true, completion: nil)
+    }
+    
+    //カテゴライズ決定ボタン押下時
     @objc func TapDecisionButton() {
         
-        if setCategory.count == 0 || setTweet.count == 0 {
+        if categoryArray.count == 0 || setTweet.count == 0 {
             return
         }
         
@@ -253,7 +235,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         
         //カテゴライズされたツイートを専用データベースへ登録
         for i in 0 ..< setTweet.count {
-            for j in 0 ..< setCategory.count {
+            for j in 0 ..< categoryArray.count {
                 let categoriseTweet: CategoriseItem = CategoriseItem()
                 
                 //移し替え
@@ -265,57 +247,23 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                 categoriseTweet.picImage = setTweet[i].picImage
                 
                 //カテゴリ情報を格納
-                categoriseTweet.category = setCategory[j]
+                categoriseTweet.category = categoryArray[j]
                 
                 try! self.realmLikesList.write {
                     self.realmLikesList.add(categoriseTweet)
                 }
             }
-
+            setTweet[i].judge = false
         }
         
-        setCategory.removeAll()
+        //setCategory.removeAll()
         setTweet.removeAll()
 
     }
     
-    @objc func TapCategoryButton (_ sender: CustomButton) {
-        
-        if sender.buttonBool {
-            sender.buttonBool = false
-            sender.layer.borderWidth = 1.0
-            
-            for i in 0 ..< setCategory.count {
-                print("OK")
-                if sender.categoryTitle! == setCategory[i] {
-                    setCategory.remove(at: i)
-                    break
-                }
-            }
-            
-        } else {
-            sender.buttonBool = true
-            sender.layer.borderWidth = 3.0
-            setCategory.append(category[sender.tag])
-        }
-    }
     
+    //リロード処理
     @objc func TapReload() {
-        //認証→取得→保存→一覧更新
-        
-        /*
-        if self.itemList != nil {
-            //タイムライン用Realmの初期化
-            try! self.realmLikesList.write {
-                print("remove Realm　スタート")
-                self.realmLikesList.delete(self.itemList)
-                
-            }
-        } else{
-            print("Realmなし")
-        }
-        */
-
         
         let getKeys = twitterKeys.GetValue()
         
@@ -417,7 +365,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                             self.showTweetMedias = []
                             
                             //カテゴリ選択情報のリセット
-                            self.setCategory.removeAll()
+                            //self.setCategory.removeAll()
                             self.setTweet.removeAll()
 
                             //Realmへの保存 & 表示用配列への保存
@@ -431,16 +379,6 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
                                 tweet.content = favoriteListViewer[i].text
                                 tweet.tweetID = favoriteListViewer[i].id_str
                                 
-                                
-//****************************************
-// media
-// image
-// tweet        Realmに保存するモデル
-// tweetMedia
-// videoInfoModel
-// videoInfoArray
-//
-//****************************************
                                 
                                 //Media関連用の配列（画像、GIF、動画）
                                 var tweetMedia = MediaInfomation()
@@ -528,33 +466,40 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         }
         */
     
+    var cellHeight: CGFloat = 0
+    
     //セルの数
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return showTweetItems.count
     }
     
+    
     //セルの高さ
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 310
+        return 320
     }
+    
     
     //セルタップ時の挙動
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*
-        print("ユーザー名 -> \(showTweetItems[indexPath.row].userName)")
-        print("画像枚数 -> \(showTweetMedias[indexPath.row].count)")
         
-        for i in 0 ..< showTweetMedias[indexPath.row].count {
-            print("Type = \(showTweetMedias[indexPath.row][i].type)")
-        }
-        */
+        print(UITableView.automaticDimension)
         
         let vc = WebTweetViewController()
         let url = "https://twitter.com/" + showTweetItems[indexPath.row].userID + "/status/" + showTweetItems[indexPath.row].tweetID
         vc.modalPresentationStyle = .fullScreen
         vc.url = url
-        present(vc, animated: true, completion: nil)
+        
+        //画面遷移を右へ
+        let transition = CATransition()
+        transition.duration = 0.25
+        transition.type = .push
+        transition.subtype = .fromRight
+        view.window?.layer.add(transition, forKey: kCATransition)
+        
+        //show(vc, sender: nil)
+        present(vc, animated: false, completion: nil)
     }
     
     
@@ -567,7 +512,9 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
         cell.setCell(name: tweet.userName, id: tweet.userID, content: tweet.content, iconImage: UIImage(url: tweet.userIcon),images: showTweetMedias[indexPath.row], judge: tweet.judge)
         cell.row = indexPath.row
         
+        
         cell.delegate = self
+        
         
         return cell
     }

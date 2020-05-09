@@ -23,20 +23,14 @@ class CustomTableViewCell: UITableViewCell {
     var contentLabel = UILabel()
     var contentPic = UIImageView()
     
-    //let imageViewer = UIView()
-    
     let firstThingButton = CustomButton()
     let secondThingButton = CustomButton()
     let thirdThingButton = CustomButton()
     let fourthThingButton = CustomButton()
     
-    //let videoButton = CustomButton()
-    
     var thingButtons: [CustomButton] = []
     
     var imageURLs: [MediaInfomation] = []
-    
-    //var twitterButton = CustomButton()
     
     var checkButton = UIButton()
     
@@ -64,16 +58,12 @@ class CustomTableViewCell: UITableViewCell {
         contentView.addSubview(userID)
         contentView.addSubview(contentPic)
         
-        //contentView.addSubview(imageViewer)
-        
         contentView.addSubview(firstThingButton)
         contentView.addSubview(secondThingButton)
         contentView.addSubview(thirdThingButton)
         contentView.addSubview(fourthThingButton)
         
-        //contentView.addSubview(twitterButton)
         contentView.addSubview(checkButton)
-        //contentView.addSubview(videoButton)
     }
     
     required init?(coder: NSCoder) {
@@ -106,68 +96,33 @@ class CustomTableViewCell: UITableViewCell {
         
         firstThingButton.frame = CGRect(x: 100, y: buttonFrameY, width: 55, height: 55)
         firstThingButton.tag = 0
-        //firstThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-        //firstThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
         firstThingButton.layer.cornerRadius = 27.5
-        //firstThingButton.setImage(UIImage(named: "camera"), for: .normal)
         firstThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        //firstThingButton.isHidden = true
         
         secondThingButton.frame = CGRect(x: 110 + 55, y: buttonFrameY, width: 55, height: 55)
         secondThingButton.tag = 1
-        //secondThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-        //secondThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
         secondThingButton.layer.cornerRadius = 27.5
-        //secondThingButton.setImage(UIImage(named: "camera"), for: .normal)
         secondThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        //secondThingButton.isHidden = true
         
         thirdThingButton.frame = CGRect(x: 120 + 110, y: buttonFrameY, width: 55, height: 55)
         thirdThingButton.tag = 2
-        //thirdThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-        //thirdThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
         thirdThingButton.layer.cornerRadius = 27.5
-        //thirdThingButton.setImage(UIImage(named: "camera"), for: .normal)
         thirdThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
-        //thirdThingButton.isHidden = true
         
         fourthThingButton.frame = CGRect(x: 130 + 165, y: buttonFrameY, width: 55, height: 55)
         fourthThingButton.tag = 3
-        //fourthThingButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-        //fourthThingButton.backgroundColor = UIColor(colorCode: "1DA1F2")
         fourthThingButton.layer.cornerRadius = 27.5
-        //fourthThingButton.setImage(UIImage(named: "camera"), for: .normal)
         fourthThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
         //fourthThingButton.isHidden = true
-        
-        /*
-        //twitterで開くボタン
-        twitterButton.frame = CGRect(x: 25, y: 90, width: 50, height: 50)
-        //twitterButton.backgroundColor = .blue
-        twitterButton.layer.cornerRadius = 25
-        twitterButton.setImage(UIImage(named: "twitter"), for: .normal)
-        twitterButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        */
+
         
         //チェックボックス
         checkButton.frame = CGRect(x: self.frame.width - 50, y: 10, width: 40, height: 40)
         checkButton.backgroundColor = UIColor(colorCode: "1DA1F2")
         checkButton.layer.cornerRadius = 20
-        //checkButton.setImage(UIImage(named: "check"), for: .normal)
         checkButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         checkButton.addTarget(self, action: #selector(TapedCheckButton), for: .touchUpInside)
-        
-        /*
-        //動画ボタン
-        videoButton.frame = CGRect(x: 100, y: buttonFrameY, width: self.frame.width / 7.5, height: self.frame.width / 7.5)
-        videoButton.tag = 0
-        videoButton.addTarget(self, action: #selector(TapedImage), for: .touchUpInside)
-        videoButton.backgroundColor = UIColor(colorCode: "FF0000")
-        videoButton.layer.cornerRadius = self.frame.width / 15
-        videoButton.setImage(UIImage(named: "video"), for: .normal)
-        videoButton.imageEdgeInsets = UIEdgeInsets(top: 17, left: 17, bottom: 17, right: 17)
-        //videoButton.isHidden = true
-        */
+
     }
     
     override func prepareForReuse() {
@@ -184,7 +139,7 @@ class CustomTableViewCell: UITableViewCell {
         
         iconImageView.image = iconImage
         userName.text = name
-        userID.text = id
+        userID.text = "@" + id
         imageURLs = images
         checkBool = judge
         
@@ -235,7 +190,6 @@ class CustomTableViewCell: UITableViewCell {
     
     
     @objc func TapedImage(_ sender: UIButton) {
-        //print(sender.tag)
         delegate?.MoveImageViewer(sender: imageURLs, currentPage: sender.tag)
         
     }

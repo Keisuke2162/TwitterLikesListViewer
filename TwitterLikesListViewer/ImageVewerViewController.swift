@@ -29,7 +29,7 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .yellow
+        view.backgroundColor = UIColor.dynamicColor(light: .white, dark: .black)
         
         width = view.frame.width
         height = view.frame.height
@@ -69,29 +69,6 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
                 let imageView = MakeImageView(at: i)
                 subScrollView.addSubview(imageView)
                 
-                /*
-                //GIFの場合
-                if imageInformation[i].type == "animated_gif" {
-                    print("GIFです")
-                    let subScrollView = MakeSubScroll(at: i)
-                    scrollView.addSubview(subScrollView)
-                    
-                    //let imageView = MakeImageView(at: i)
-                    //subScrollView.addSubview(imageView)
-                    
-                    let gifView = MakeGifMovie(at: i)
-                    subScrollView.layer.addSublayer(gifView)
-                    
-                } else {
-                    //通常画像の場合
-                    print("Imageです")
-                    let subScrollView = MakeSubScroll(at: i)
-                    scrollView.addSubview(subScrollView)
-                    
-                    let imageView = MakeImageView(at: i)
-                    subScrollView.addSubview(imageView)
-                }
-                */
             }
             
             scrollView.contentOffset = CGPoint(x: scrollView.bounds.width * CGFloat(currentPage), y: 0)
@@ -101,12 +78,18 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
             
         }
         
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(ReturnView))
+        swipeDown.direction = .down
         
+        view.addGestureRecognizer(swipeDown)
+        
+        /*
         let returnButton = UIButton()
         returnButton.frame = CGRect(x: 10, y: 10, width: 50, height: 50)
         returnButton.backgroundColor = .red
         returnButton.addTarget(self, action: #selector(ReturnView), for: .touchUpInside)
         view.addSubview(returnButton)
+        */
 
         // Do any additional setup after loading the view.
     }
@@ -139,6 +122,15 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
     
     //画面を戻る
     @objc func ReturnView() {
+        
+        /*
+        let transition = CATransition()
+        transition.duration = 0.225
+        transition.type = .push
+        transition.subtype = .fromBottom
+        view.window?.layer.add(transition, forKey: kCATransition)
+        */
+        
         dismiss(animated: true, completion: nil)
     }
     
@@ -154,6 +146,7 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
         
         return playerLayer
     }
+    
     //表示する写真をもとにImageView作成
     func MakeImageView(at page: Int) -> UIImageView {
         let frame = scrollView.bounds
@@ -201,7 +194,7 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
     //mainScrollViewを設置んぐ
     func setupScrollView() {
         scrollView.frame = view.bounds
-        scrollView.backgroundColor = .blue
+        scrollView.backgroundColor = UIColor.dynamicColor(light: .white, dark: .black)
         scrollView.delegate = self
         scrollView.minimumZoomScale = minZoom
         scrollView.maximumZoomScale = maxZoom
@@ -258,3 +251,14 @@ class ImageVewerViewController: UIViewController, UIScrollViewDelegate {
     */
 
 }
+
+/*スワイプけんち
+extension UIViewController {
+
+    func setSwipeBack() {
+        let target = self.navigationController?.value(forKey: "_cachedInteractionController")
+        let recognizer = UIPanGestureRecognizer(target: target, action: Selector(("handleNavigationTransition:")))
+        self.view.addGestureRecognizer(recognizer)
+    }
+}
+*/

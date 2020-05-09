@@ -20,13 +20,19 @@ class ViewController: UIViewController, DoingViewController {
     let categoryData = ViewCategory()
     
     var controllers: [UIViewController] = []
-
+    
+    let colorStr: [String] = ["00b2c4","00a6de","0080ae","3659a7","708ac4","94d0c9","bba0c5","8d7a6a","65473c"]
+    var colorList: [UIColor] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         print("setViewController")
+        
+        for i in colorStr {
+            colorList.append(UIColor(colorCode: i))
+        }
         
         /*
         //テスト用
@@ -58,8 +64,13 @@ class ViewController: UIViewController, DoingViewController {
             controllers.append(viewController)
         }
         
-        let statusBarHeight: CGFloat = view.frame.height * 0.05
-        pageMenuController = PMKPageMenuController(controllers: controllers, menuStyle: .Tab, menuColors: [], topBarHeight: statusBarHeight)
+        let statusBarHeight: CGFloat = view.frame.height * 0.04
+        pageMenuController = PMKPageMenuController(controllers: controllers, menuStyle: .Smart, menuColors: colorList, topBarHeight: statusBarHeight)
+        
+        if let a = pageMenuController?.menuColors {
+            homeView.colorArray = a
+        }
+        
         self.addChild(pageMenuController!)
         self.view.addSubview(pageMenuController!.view)
         pageMenuController?.didMove(toParent: self)
