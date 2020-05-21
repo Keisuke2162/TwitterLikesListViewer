@@ -74,45 +74,46 @@ class CustomTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         //ユーザーアイコン
-        iconImageView.frame = CGRect(x: 20, y: 20, width: 60, height: 60)
-        iconImageView.layer.cornerRadius = 30
+        iconImageView.frame = CGRect(x: 10, y: 20, width: 50, height: 50)
+        iconImageView.layer.cornerRadius = 25
         iconImageView.clipsToBounds = true
         
         //ユーザー名
-        userName.frame = CGRect(x: 100, y: 0, width: self.frame.width - 170, height: 30)
+        userName.frame = CGRect(x: 100, y: 10, width: self.frame.width - 170, height: 30)
         
         //ユーザーID
-        userID.frame = CGRect(x: 100, y: 30, width: self.frame.width - 170, height: 20)
+        userID.frame = CGRect(x: 100, y: 40, width: self.frame.width - 170, height: 15)
+        userID.adjustsFontSizeToFitWidth = true
         userID.textColor = .gray
         
         //ツイート内容
-        contentLabel.frame = CGRect(x: 100, y: 50, width: self.frame.width - 125, height: 75)
-        contentLabel.lineBreakMode = .byWordWrapping
+        contentLabel.frame = CGRect(x: 100, y: 60, width: self.frame.width - 125, height: 60)
+        //contentLabel.lineBreakMode = .byWordWrapping
         contentLabel.numberOfLines = 0
-        contentLabel.sizeToFit()
+        //contentLabel.sizeToFit()
         
         //
-        let buttonFrameY = contentLabel.frame.origin.y + contentLabel.frame.height + 10
+        let buttonFrameY = contentLabel.frame.origin.y + contentLabel.frame.height + 5
         
-        firstThingButton.frame = CGRect(x: 100, y: buttonFrameY, width: 55, height: 55)
+        firstThingButton.frame = CGRect(x: 100, y: buttonFrameY, width: 45, height: 45)
         firstThingButton.tag = 0
-        firstThingButton.layer.cornerRadius = 27.5
-        firstThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        firstThingButton.layer.cornerRadius = 22.5
+        firstThingButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        secondThingButton.frame = CGRect(x: 110 + 55, y: buttonFrameY, width: 55, height: 55)
+        secondThingButton.frame = CGRect(x: 110 + 55, y: buttonFrameY, width: 45, height: 45)
         secondThingButton.tag = 1
-        secondThingButton.layer.cornerRadius = 27.5
-        secondThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        secondThingButton.layer.cornerRadius = 22.5
+        secondThingButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        thirdThingButton.frame = CGRect(x: 120 + 110, y: buttonFrameY, width: 55, height: 55)
+        thirdThingButton.frame = CGRect(x: 120 + 110, y: buttonFrameY, width: 45, height: 45)
         thirdThingButton.tag = 2
-        thirdThingButton.layer.cornerRadius = 27.5
-        thirdThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        thirdThingButton.layer.cornerRadius = 22.5
+        thirdThingButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        fourthThingButton.frame = CGRect(x: 130 + 165, y: buttonFrameY, width: 55, height: 55)
+        fourthThingButton.frame = CGRect(x: 130 + 165, y: buttonFrameY, width: 45, height: 45)
         fourthThingButton.tag = 3
-        fourthThingButton.layer.cornerRadius = 27.5
-        fourthThingButton.imageEdgeInsets = UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)
+        fourthThingButton.layer.cornerRadius = 22.5
+        fourthThingButton.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         //fourthThingButton.isHidden = true
 
         

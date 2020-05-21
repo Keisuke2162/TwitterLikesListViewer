@@ -477,7 +477,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     //セルの高さ
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        return 320
+        return 175
     }
     
     
@@ -525,5 +525,7 @@ class Login_APIrequest_Backup_ViewController: UIViewController, UITableViewDeleg
     }
     
 }
+
+
 
 
